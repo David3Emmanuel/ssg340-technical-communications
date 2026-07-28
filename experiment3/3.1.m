@@ -1,5 +1,5 @@
 % 1. Define Arrays
-degrees = linspace(0, 360, 50); 
+degrees = linspace(0, 360, 50);
 
 % 2. Convert to Radians
 radians = (pi / 180) .* degrees;
