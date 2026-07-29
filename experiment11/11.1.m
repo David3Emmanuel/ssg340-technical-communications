@@ -7,8 +7,8 @@ K1 = 0.02;
 K2 = 0.05;
 
 % Task 3: User inputs
-dt = input('Enter time step (dt) [e.g., 1.0]: ');
-out_interval = input('Enter output display interval [e.g., 2.0]: ');
+dt = input('Enter time step dt (s, 0.1 to 2.0, e.g. 1.0): ');
+out_interval = input('Enter output display interval (s, 1 to 10, multiple of dt, e.g. 2.0): ');
 
 t_max = 200;
 t_num = 0:dt:t_max;

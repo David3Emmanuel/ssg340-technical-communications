@@ -2,11 +2,11 @@
 fprintf('--- 8.3 Experiment 3: Temperature Change Modeling ---\n');
 
 % Task 2: Prompt the user to input the initial parameters
-T0 = input('Enter initial temperature of juice (T0): ');
-F = input('Enter ambient temperature of fridge (F): ');
-K = input('Enter cooling constant (K): ');
-dt = input('Enter time step (dt): ');
-opint = input('Enter output interval (opint): ');
+T0 = input('Enter initial temperature of juice T0 (C, 25 to 35, e.g. 30): ');
+F = input('Enter ambient temperature of fridge F (C, 2 to 5, e.g. 4): ');
+K = input('Enter cooling constant K (0.01 to 0.05, e.g. 0.02): ');
+dt = input('Enter time step dt (s, 0.1 to 1.0, e.g. 0.5): ');
+opint = input('Enter output interval opint (s, 1 to 5, must be a multiple of dt, e.g. 2.0): ');
 
 % Task 5: Ensure output interval opint is an integer multiple of dt
 % Using a small tolerance (1e-6) to account for floating-point arithmetic issues

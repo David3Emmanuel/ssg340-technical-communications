@@ -2,8 +2,8 @@
 fprintf('--- 8.4 Experiment 4: Projectile Motion and Optimization ---\n');
 
 % Task 2: Prompt user for initial velocity and launch angle
-u = input('Enter initial velocity (u) in m/s: ');
-theta_deg = input('Enter launch angle (theta) in degrees: ');
+u = input('Enter initial velocity u (m/s, 10 to 100, e.g. 50): ');
+theta_deg = input('Enter launch angle theta (degrees, 1 to 89, e.g. 45): ');
 theta = theta_deg * (pi / 180); % Convert to radians
 g = 9.8;
 

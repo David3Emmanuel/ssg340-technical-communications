@@ -4,20 +4,15 @@ Covers temperature modelling with user input, random walk simulation, histograms
 bin sizes, bubble sort versus MATLAB's built-in sort, and storing mixed data in
 structures and cell arrays.
 
-> ⚠️ **The scripts in this folder are not written yet.** All five `.m` files are
-> currently empty. This README is the specification — it records what each script
-> needs to do and which values to use, taken from the lab manual. Everything below
-> describes the intended behaviour, not code that exists.
-
 ## Files
 
 | File | Topic | Values |
 | --- | --- | --- |
-| [11.1.m](11.1.m) | Temperature modelling | 📋 **Prompts for input** — see guidelines |
-| [11.2.m](11.2.m) | Random walk | 🔧 Hardcode the variations |
-| [11.3.m](11.3.m) | Histogram of student marks | 🔧 Hardcode / generate randomly |
-| [11.4.m](11.4.m) | Bubble sort efficiency | 🔧 Generate inside the script |
-| [11.5.m](11.5.m) | Structures and cell arrays | 🔧 Hardcode the records |
+| [11.1.m](11.1.m) | Cooling curves, numerical vs exact, two cooling constants | 📋 **Prompts for input** |
+| [11.2.m](11.2.m) | Random walk from `x = 40`, 500 and 1000 steps | 🔧 Hardcoded |
+| [11.3.m](11.3.m) | Histogram of random student marks at two bin counts | 🔧 Generated randomly |
+| [11.4.m](11.4.m) | Bubble sort, traced small then timed against `sort` | 🔧 Generated randomly |
+| [11.5.m](11.5.m) | Structures, cell arrays, and a `varargin` builder function | 🔧 Hardcoded |
 
 Only `11.1.m` asks you to type anything. The other four generate or hardcode their
 own data, so you just press **Run**.
@@ -40,53 +35,73 @@ ranges for a stable simulation:
 > ⚠️ **Note:** For the cleanest output, ensure your `output_interval` is a multiple of
 > `dt` (e.g., if `dt = 0.5`, an interval of `2.0` works perfectly).
 
+This matters more than it looks. The script decides when to print by testing
+`mod(t, out_interval) < 1e-5` — if your interval is not a multiple of `dt`, the
+simulation time never lands close enough to a multiple and **you get almost no printed
+output at all**. The plot still draws correctly, so an empty-looking table is the
+symptom to watch for.
+
+Everything else in `11.1.m` is hardcoded and does not need changing: `T0 = 30`,
+`F = 4`, the two cooling constants `K1 = 0.02` and `K2 = 0.05`, and `t_max = 200`.
+
+> ⚠️ **`11.1.m` stops and waits for you to click the figure.** The last four lines call
+> `gtext`, which parks the script until you click a spot on the graph to drop each
+> label. Four labels means **four clicks**. If MATLAB looks frozen after the plot
+> appears, it is waiting for you — bring the figure window to the front and click.
+
 ---
 
-## 🔧 What to hardcode in the other four
+## 🔧 What is hardcoded in the other four
 
 ### Experiment 11.2 — Random Walk
 
-The manual asks you to start at `x = 40` and *"Experiment with different numbers of
-steps (e.g., 500, 1000)"*. Hardcode these variations directly in the script — for
-example, a `for` loop that runs the simulation for 500 steps, then 1000.
+Starts at `x = 40` and runs the walk for `500` then `1000` steps, one subplot each,
+driven by `steps_array = [500, 1000]` at [line 5](11.2.m#L5). Add another value to
+that array for a third length — the loop and subplot indices follow it automatically.
 
-Because a random walk uses `rand`, **your path will be different every run**. That is
-expected. Add `rng(0);` at the top if you need the same walk twice, for instance when
-comparing two step counts fairly or when re-generating a figure for your report.
+Because a random walk uses `rand`, **your distribution will be different every run**.
+That is expected. Add `rng(0);` at the top if you need the same walk twice, for
+instance when comparing the two step counts fairly or re-generating a figure for your
+report.
 
 ### Experiment 11.3 — Histogram
 
-Hardcode a list of student marks and test different bin sizes such as `10` and `20`.
-Generate the marks with random numbers:
+Marks are generated rather than typed:
 
 ```matlab
-marks = randi([0, 100], 1, 100);   % 100 students, marks from 0 to 100
+marks = randi([0, 100], 1, 150);   % 150 students, marks from 0 to 100
+bins  = [10, 20];                   % the two bin counts to compare
 ```
 
-Note that `randi` gives whole numbers, which is what you want for marks. The same
-`rng(0);` tip applies — without it, your histogram changes shape on every run and
-will not match whatever you paste into your report.
+`randi` gives whole numbers, which is what you want for marks. The same `rng(0);` tip
+applies — without it the histogram changes shape on every run and will not match what
+you paste into your report.
+
+The script uses `hist`, which is what the manual's hints call for. Newer MATLAB
+releases prefer `histogram` and may flag `hist` as discouraged; it still works, so
+leave it unless your lecturer says otherwise.
 
 ### Experiment 11.4 — Bubble Sort
 
-The manual asks you to compare sorting efficiency by *"sorting large datasets (e.g.,
-1000 numbers)"*. Generate the array inside the script and pass it to your sorting
-functions:
+Two parts. A five-element array printed after every pass so you can watch the sort
+work, then a 1000-element timing comparison.
 
-```matlab
-data = rand(1, 1000);
-```
+The timing part is set up correctly for a fair test — `large_data` is generated once
+and copied into two separate variables, so bubble sort and `sort` operate on
+**identical** data rather than two different random arrays.
 
-Time both approaches with `tic` / `toc`, the same way `8.2.m` compares the two
-binomial coefficient formulas. Bubble sort will be dramatically slower than MATLAB's
-built-in `sort` on 1000 elements — that gap **is** the result the task is after, not
-a sign anything is broken.
-
-Use the *same* array for both methods, not two separate calls to `rand`, or you are
-not comparing like with like.
+Bubble sort will be dramatically slower than MATLAB's built-in `sort` on 1000
+elements. That gap **is** the result the task is after, not a sign anything is broken.
+Expect a wait of a second or so on the bubble sort while `sort` finishes essentially
+instantly.
 
 ### Experiment 11.5 — Data Structures
 
-The student names, IDs, and marks should be manually hardcoded when initialising the
-structure and cell arrays. Pick a handful of entries — enough to demonstrate the data
-structure, not a full class list.
+Student names, IDs and marks are hardcoded when the structure and cell arrays are
+initialised, as the manual asks. Two students are defined directly, then two more are
+built dynamically through `create_students`.
+
+That helper takes `varargin` in groups of three (Name, ID, Marks) and errors if you
+pass a number of arguments that is not a multiple of three — so if you add a student,
+add all three fields. It sits at the **bottom** of the file because MATLAB requires
+local functions to come last in a script, which the comment above it notes.

@@ -24,11 +24,13 @@ run as-is and which values you need to substitute:
 | experiment8 | Loops, iteration and simulation — **all scripts prompt for input** | [experiment8/README.md](experiment8/README.md) |
 | experiment9 | Debugging and error handling | [experiment9/README.md](experiment9/README.md) |
 | experiment10 | User-defined functions, recursion and numerical methods | [experiment10/README.md](experiment10/README.md) |
-| experiment11 | Simulation, sorting and data structures — *scripts not written yet* | [experiment11/README.md](experiment11/README.md) |
+| experiment11 | Simulation, sorting and data structures | [experiment11/README.md](experiment11/README.md) |
 | experiment12 | Handle graphics, 3-D plotting and exporting figures | [experiment12/README.md](experiment12/README.md) |
 | experiment13 | Building GUIs — **written programmatically instead of with GUIDE** | [experiment13/README.md](experiment13/README.md) |
 | experiment14 | Beam deflection and RL circuits — **both scripts prompt for input** | [experiment14/README.md](experiment14/README.md) |
-| experiment15 – experiment17 | *(not started yet — folders are empty)* | — |
+| experiment15 | *(not started yet — folder is empty)* | — |
+| experiment16 | Matrices, linear systems and Markov chains | [experiment16/README.md](experiment16/README.md) |
+| experiment17 | *(not started yet — folder is empty)* | — |
 
 Each of those READMEs marks every script as either:
 

@@ -65,7 +65,7 @@ fprintf('Difference: %.6f\n', abs(pi - piApprox));
 
 %% Task 5: Determining Doubling Time for an Investment (While Loop)
 fprintf('\n--- Task 5: Investment Doubling Time ---\n');
-initial = input('Enter initial investment amount (must be > 0): ');
+initial = input('Enter initial investment amount (must be > 0, e.g. 1000): ');
 rate = input('Enter annual interest rate as decimal (0 to 1, e.g. 0.05): ');
 target = 2 * initial;
 balance = initial;
