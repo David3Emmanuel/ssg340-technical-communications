@@ -30,7 +30,7 @@ run as-is and which values you need to substitute:
 | experiment14 | Beam deflection and RL circuits — **both scripts prompt for input** | [experiment14/README.md](experiment14/README.md) |
 | experiment15 | *(not started yet — folder is empty)* | — |
 | experiment16 | Matrices, linear systems and Markov chains | [experiment16/README.md](experiment16/README.md) |
-| experiment17 | *(not started yet — folder is empty)* | — |
+| experiment17 | Numerical methods — root finding, ODEs, curve fitting | [experiment17/README.md](experiment17/README.md) |
 
 Each of those READMEs marks every script as either:
 
