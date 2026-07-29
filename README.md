@@ -20,7 +20,8 @@ run as-is and which values you need to substitute:
 | experiment4 | Projectile motion, quadratic solver, simultaneous equations | [experiment4/README.md](experiment4/README.md) |
 | experiment5 | Inverse trigonometric functions and subplots | [experiment5/README.md](experiment5/README.md) |
 | experiment6 | Logical vectors, logical indexing, matrices | [experiment6/README.md](experiment6/README.md) |
-| experiment7 – experiment17 | *(not started yet — folders are empty)* | — |
+| experiment7 | Advanced 2-D plotting and customisation | [experiment7/README.md](experiment7/README.md) |
+| experiment8 – experiment17 | *(not started yet — folders are empty)* | — |
 
 Each of those READMEs marks every script as either:
 
