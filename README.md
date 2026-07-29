@@ -31,6 +31,8 @@ run as-is and which values you need to substitute:
 | experiment15 | *(not started yet — folder is empty)* | — |
 | experiment16 | Matrices, linear systems and Markov chains | [experiment16/README.md](experiment16/README.md) |
 | experiment17 | Numerical methods — root finding, ODEs, curve fitting | [experiment17/README.md](experiment17/README.md) |
+| experiment18 | Optimization — **most scripts need the Optimization Toolbox** | [experiment18/README.md](experiment18/README.md) |
+| experiment19 | Metaheuristic optimization — ten algorithms, hand-written | [experiment19/README.md](experiment19/README.md) |
 
 Each of those READMEs marks every script as either:
 
@@ -51,3 +53,26 @@ commands.
 
 Scripts that use `rand` produce slightly different output on every run. That is
 expected. Add `rng(0);` at the top if you need repeatable numbers.
+
+## Toolboxes
+
+Almost everything here runs on base MATLAB. Two experiments do not:
+
+| Experiment | Needs | Affected |
+| --- | --- | --- |
+| experiment18 | Optimization Toolbox | 18.1, 18.2, 18.4, 18.6, 18.7, 18.9 |
+| experiment10 | Statistics and Machine Learning Toolbox | 10.6 only (`normcdf`) |
+| experiment19 | Statistics and Machine Learning Toolbox | 19.5 only (`range`) |
+
+Check what you have with `ver`, or test a specific one:
+
+```matlab
+license('test', 'Optimization_Toolbox')   % 1 = available
+```
+
+The experiment 10 and 19 READMEs each give a one-line base-MATLAB substitute
+(`normcdf` and `range` respectively). The experiment 18 scripts have no equivalent
+workaround — those need the toolbox.
+
+Experiment 19 is otherwise pure base MATLAB: all ten metaheuristics are written out by
+hand rather than calling `ga` or `particleswarm`, so they run on any installation.
