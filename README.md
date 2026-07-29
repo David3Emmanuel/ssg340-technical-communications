@@ -25,7 +25,8 @@ run as-is and which values you need to substitute:
 | experiment9 | Debugging and error handling | [experiment9/README.md](experiment9/README.md) |
 | experiment10 | User-defined functions, recursion and numerical methods | [experiment10/README.md](experiment10/README.md) |
 | experiment11 | Simulation, sorting and data structures — *scripts not written yet* | [experiment11/README.md](experiment11/README.md) |
-| experiment12 – experiment17 | *(not started yet — folders are empty)* | — |
+| experiment12 | Handle graphics, 3-D plotting and exporting figures | [experiment12/README.md](experiment12/README.md) |
+| experiment13 – experiment17 | *(not started yet — folders are empty)* | — |
 
 Each of those READMEs marks every script as either:
 
