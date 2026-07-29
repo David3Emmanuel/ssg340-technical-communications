@@ -2,7 +2,7 @@
 
 Covers relational and logical operators, using logical vectors as array subscripts,
 the `any` / `all` / `sum` logical functions, Monte Carlo simulation with `rand`, and
-basic matrix operations.
+matrix operations up to multidimensional arrays and tiling.
 
 ## Files and which values you need to change
 
@@ -12,6 +12,8 @@ basic matrix operations.
 | [6.2.m](6.2.m) | `any`/`all`, dice rolls, Monte Carlo π, logical subsetting | ✅ **Given** — leave as-is |
 | [6.3.m](6.3.m) | Tax bands, vectorised loan repayments, random statistics, matrix filtering | ✏️ **Change this** — see below |
 | [6.4.m](6.4.m) | Matrix creation, multiplication, transposition, reshaping | ✅ **Given** — leave as-is |
+| [6.5.m](6.5.m) | Same four matrix tasks as 6.4, with fuller narrated output | ✅ **Given** — leave as-is |
+| [6.6.m](6.6.m) | 3D arrays with `cat`, reshaping, `eye`, `pascal`, `repmat` | ✅ **Given** — leave as-is |
 
 ## ✏️ What to change in 6.3.m
 
