@@ -63,6 +63,7 @@ Almost everything here runs on base MATLAB. Two experiments do not:
 | experiment18 | Optimization Toolbox | 18.1, 18.2, 18.4, 18.6, 18.7, 18.9 |
 | experiment10 | Statistics and Machine Learning Toolbox | 10.6 only (`normcdf`) |
 | experiment19 | Statistics and Machine Learning Toolbox | 19.5 only (`range`) |
+| experiment18 | **CVX** — free third-party download, not from MathWorks | 18.3 only |
 
 Check what you have with `ver`, or test a specific one:
 
@@ -73,6 +74,11 @@ license('test', 'Optimization_Toolbox')   % 1 = available
 The experiment 10 and 19 READMEs each give a one-line base-MATLAB substitute
 (`normcdf` and `range` respectively). The experiment 18 scripts have no equivalent
 workaround — those need the toolbox.
+
+**CVX (for 18.3) is free**, but you download and install it yourself from
+http://cvxr.com/cvx/download/ — it is not in the Add-On Explorer and `ver` will not
+list it. The [experiment18 README](experiment18/README.md) has step-by-step
+instructions.
 
 Experiment 19 is otherwise pure base MATLAB: all ten metaheuristics are written out by
 hand rather than calling `ga` or `particleswarm`, so they run on any installation.

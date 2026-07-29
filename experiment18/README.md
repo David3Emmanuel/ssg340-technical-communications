@@ -10,7 +10,7 @@ and the assignment problem.
 | --- | --- | --- |
 | [18.1.m](18.1.m) | Linear Programming — `linprog` | Optimization Toolbox |
 | [18.2.m](18.2.m) | Integer Programming for scheduling — `intlinprog` | Optimization Toolbox |
-| [18.3.m](18.3.m) | *(empty — blocked on a toolbox issue)* | — |
+| [18.3.m](18.3.m) | Convex optimization — `cvx_begin` / `cvx_end` | ⚠️ **CVX** (third-party) |
 | [18.4.m](18.4.m) | Quadratic Programming, portfolio — `quadprog` | Optimization Toolbox |
 | [18.5.m](18.5.m) | Dynamic Programming, shortest path — `digraph` | ✅ Base MATLAB |
 | [18.6.m](18.6.m) | LP duality and sensitivity — `linprog` | Optimization Toolbox |
@@ -36,19 +36,62 @@ license('test', 'Optimization_Toolbox')   % 1 = available
 
 The three base-MATLAB scripts (18.5, 18.8, 18.10) run on any installation.
 
-> **18.3 is still outstanding.** It is blocked on a toolbox that is not available and
-> has not been written yet. Everything else in the folder is complete.
+**18.3 is different — it needs CVX, which is not a MathWorks product at all.** It is a
+free third-party package you download and install yourself. Full instructions below.
+
+---
+
+## 📦 Installing CVX (needed for 18.3 only)
+
+CVX does **not** ship with MATLAB and is **not** in the Add-On Explorer — you have to
+download it separately. It is free.
+
+1. Go to the official website: **http://cvxr.com/cvx/download/**
+2. Download the `.zip` for your operating system (Windows / Mac / Linux).
+3. Extract the `cvx` folder anywhere on your computer — your Documents folder is fine.
+4. Open MATLAB.
+5. Change your current directory to the extracted `cvx` folder, either with the folder
+   browser on the left or by typing:
+
+   ```matlab
+   cd '/path/to/your/cvx'
+   ```
+
+6. From inside that folder, run:
+
+   ```matlab
+   cvx_setup
+   ```
+
+MATLAB runs an installation script and adds CVX to your path automatically. Once it
+reports **Complete**, `18.3.m` will run without any issues.
+
+### After installing
+
+Check it took:
+
+```matlab
+cvx_version     % prints the installed version
+```
+
+> ⚠️ **If CVX stops working after you restart MATLAB**, its path was not saved. Run
+> `cvx_setup` once more from the `cvx` folder and let it save the path, or add
+> `savepath` afterwards. This is the most common complaint and it is not a broken
+> install.
+
+Note that `ver` and `license('test', ...)` will **not** list CVX — those only report
+MathWorks products. Use `cvx_version` instead.
 
 ## Expected results
 
-All nine written scripts are deterministic — no `rand` anywhere — so you should get
-exactly these numbers every time. Useful for checking your run without re-deriving
-the maths:
+All ten scripts are deterministic — no `rand` anywhere — so you should get exactly
+these numbers every time. Useful for checking your run without re-deriving the maths:
 
 | Script | Expected output |
 | --- | --- |
 | 18.1 | `x1 = 4`, `x2 = 2`, maximum `26` |
 | 18.2 | `x1 = 0`, `x2 = 4`, minimum `8` |
+| 18.3 | `x1 = 2`, `x2 = 2`, minimum `8` |
 | 18.4 | `w1 = 0.25`, `w2 = 0.75`, objective `0.875` |
 | 18.5 | Shortest path cost `7` |
 | 18.6 | Objective `26`, shadow prices `1` and `2` |
@@ -126,6 +169,20 @@ and one extra unit of the second is worth `2`. The second constraint is the more
 valuable one to relax. Note the objective was negated to turn the maximisation into
 the minimisation `linprog` expects, so mind the sign convention if you quote these
 numbers directly.
+
+### 18.3 — why the answer is what it is
+
+Minimises `x₁² + x₂²` subject to `x₁ + x₂ = 4` and both variables non-negative. The
+answer splits the total evenly: `x₁ = x₂ = 2`, objective `8`.
+
+That is the whole point of a convex problem — squaring penalises imbalance, so an
+uneven split like `(4, 0)` costs `16`, double the optimum. There is exactly one
+minimum and no local traps, which is what makes CVX able to solve it directly rather
+than searching like the metaheuristics in
+[experiment19](../experiment19/README.md).
+
+`cvx_begin quiet` suppresses the solver's progress output. Drop `quiet` if you want to
+see which solver ran and how it converged — useful material for a report.
 
 ### 18.10 — `matchpairs` needs R2019a or newer
 
