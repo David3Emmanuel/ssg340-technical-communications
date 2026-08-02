@@ -28,7 +28,7 @@ run as-is and which values you need to substitute:
 | experiment12 | Handle graphics, 3-D plotting and exporting figures | [experiment12/README.md](experiment12/README.md) |
 | experiment13 | Building GUIs — **written programmatically instead of with GUIDE** | [experiment13/README.md](experiment13/README.md) |
 | experiment14 | Beam deflection and RL circuits — **both scripts prompt for input** | [experiment14/README.md](experiment14/README.md) |
-| experiment15 | *(not started yet — folder is empty)* | — |
+| experiment15 | Random number simulation — Monte Carlo experiments | [experiment15/README.md](experiment15/README.md) |
 | experiment16 | Matrices, linear systems and Markov chains | [experiment16/README.md](experiment16/README.md) |
 | experiment17 | Numerical methods — root finding, ODEs, curve fitting | [experiment17/README.md](experiment17/README.md) |
 | experiment18 | Optimization — **most scripts need the Optimization Toolbox** | [experiment18/README.md](experiment18/README.md) |
