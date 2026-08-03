@@ -1,49 +1,57 @@
-%% Task 1: Matrix Creation and Subscript Access
-fprintf('--- Task 1: Matrix Creation and Subscript Access ---\n');
-A = [1 2 3; 4 5 6; 7 8 9];
-fprintf('Creating a 3x3 Matrix A:\n');
-disp(A);
+%% Task 1: Solving a Linear System with Left Division
+fprintf('--- Task 1: Solving A*X = B ---\n');
+A1 = [2, 3; 4, 5];
+B1 = [8; 14];
 
-fprintf('Accessing the element in the 2nd row, 3rd column (A(2,3)):\n');
-fprintf('Result: %d\n\n', A(2,3));
+X = A1 \ B1;   % left division solves A1*X = B1 without forming the inverse
 
-fprintf('Extracting the entire second column (A(:,2)):\n');
-disp(A(:,2));
+disp('Coefficient matrix A1:');
+disp(A1);
+disp('Right-hand side B1:');
+disp(B1);
+disp('Solution X:');
+disp(X);
 
-%% Task 2: Matrix Multiplication and Element-wise Operations
-fprintf('\n--- Task 2: Matrix Multiplication and Element-wise Ops ---\n');
-B = [1 2 3; 4 5 6; 7 8 9];
+%% Task 2: Determinant, Inverse and the Identity Check
+fprintf('\n--- Task 2: Determinant and Inverse ---\n');
+A2 = [3, 2; 4, 1];
 
-C = A * B;        % matrix multiplication
-D = A .* B;       % element-wise multiplication
+det_A2 = det(A2);              % non-zero determinant means A2 is invertible
+inv_A2 = inv(A2);
+identity_check = A2 * inv_A2;  % should return the identity matrix
 
-fprintf('Performing standard matrix multiplication (C = A * B):\n');
-disp(C);
+disp('Matrix A2:');
+disp(A2);
+fprintf('Determinant of A2: %.4f\n', det_A2);
+disp('Inverse of A2:');
+disp(inv_A2);
+disp('A2 * inv(A2) (should be the identity):');
+disp(identity_check);
 
-fprintf('Performing element-wise multiplication (D = A .* B):\n');
+%% Task 3: Eigenvalues and Eigenvectors
+fprintf('\n--- Task 3: Eigenvalues and Eigenvectors ---\n');
+A3 = [4, 1; 2, 3];
+
+[V, D] = eig(A3);   % V holds the eigenvectors in columns, D the eigenvalues on its diagonal
+
+disp('Matrix A3:');
+disp(A3);
+disp('Eigenvectors (one per column of V):');
+disp(V);
+disp('Eigenvalues (on the diagonal of D):');
 disp(D);
 
-%% Task 3: Matrix Transposition and Accessing Submatrices
-fprintf('\n--- Task 3: Transposition and Submatrices ---\n');
-Atrans = A';   % transpose of A
-fprintf('Transposing Matrix A (switching rows and columns):\n');
-disp(Atrans);
+%% Task 4: LU Decomposition
+fprintf('\n--- Task 4: LU Decomposition ---\n');
+A4 = [4, 2; 3, 1];
 
-sub = A(1:2, 2:3);   % submatrix using colon notation
-fprintf('Extracting a submatrix from A (rows 1 to 2, columns 2 to 3):\n');
-disp(sub);
+[L, U] = lu(A4);   % factorises A4 into a lower and an upper triangular matrix
 
-%% Task 4: Advanced Matrix Reshaping and Operations
-fprintf('\n--- Task 4: Matrix Reshaping ---\n');
-x = 1:9;
-M = reshape(x, 3, 3);   % reshape 1D array into 3x3 matrix
-fprintf('Reshaping a 1D array (1 to 9) into a 3x3 matrix M:\n');
-disp(M);
-
-Mtrans = M';             % transpose of reshaped matrix
-fprintf('Transposing the reshaped matrix M:\n');
-disp(Mtrans);
-
-Msquared = M .^ 2;       % element-wise square, another operation on reshaped matrix
-fprintf('Calculating the element-wise square of M (M .^ 2):\n');
-disp(Msquared);
+disp('Matrix A4:');
+disp(A4);
+disp('Lower triangular factor L:');
+disp(L);
+disp('Upper triangular factor U:');
+disp(U);
+disp('L * U (should reproduce A4):');
+disp(L * U);

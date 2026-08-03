@@ -2,7 +2,8 @@
 
 Covers relational and logical operators, using logical vectors as array subscripts,
 the `any` / `all` / `sum` logical functions, Monte Carlo simulation with `rand`, and
-matrix operations up to multidimensional arrays and tiling.
+matrix operations from basic multiplication through linear algebra to
+multidimensional arrays and tiling.
 
 ## Files and which values you need to change
 
@@ -12,7 +13,7 @@ matrix operations up to multidimensional arrays and tiling.
 | [6.2.m](6.2.m) | `any`/`all`, dice rolls, Monte Carlo π, logical subsetting | ✅ **Given** — leave as-is |
 | [6.3.m](6.3.m) | Tax bands, vectorised loan repayments, random statistics, matrix filtering | ✏️ **Change this** — see below |
 | [6.4.m](6.4.m) | Matrix creation, multiplication, transposition, reshaping | ✅ **Given** — leave as-is |
-| [6.5.m](6.5.m) | Same four matrix tasks as 6.4, with fuller narrated output | ✅ **Given** — leave as-is |
+| [6.5.m](6.5.m) | Linear systems, determinant and inverse, eigenvalues, LU decomposition | ✅ **Given** — leave as-is |
 | [6.6.m](6.6.m) | 3D arrays with `cat`, reshaping, `eye`, `pascal`, `repmat` | ✅ **Given** — leave as-is |
 
 ## ✏️ What to change in 6.3.m
@@ -66,6 +67,30 @@ M(M > 0.8) = 1;     % <-- upper cut-off
 Note that `lowCount` and `highCount` are deliberately computed **before** the two
 clipping lines. Counting after the clipping would give the wrong answer, because by
 then the small values have already been overwritten with 0 and the large ones with 1.
+
+## Expected output for 6.5.m
+
+`6.5.m` is fully deterministic — no `rand` — so these are exactly the numbers you
+should see. Useful for checking your run:
+
+| Task | Result |
+| --- | --- |
+| 1 — solve `A1*X = B1` | `X = [1; 2]` |
+| 2 — determinant of `A2` | `-5` |
+| 2 — inverse of `A2` | `[-0.2, 0.4; 0.8, -0.6]` |
+| 2 — identity check | the 2×2 identity |
+| 3 — eigenvalues of `A3` | `2` and `5` |
+| 4 — `L * U` | reproduces `A4` exactly |
+
+Two things worth knowing for the viva:
+
+- **Task 1 uses `\`, not `inv(A1)*B1`.** Left division solves the system directly
+  without ever forming the inverse, which is both faster and more numerically
+  accurate. Task 2 computes an inverse only because it is explicitly asked to.
+- **Task 4's `L` comes out genuinely lower triangular here.** With two outputs, `lu`
+  returns a *row-permuted* `L` whenever pivoting is needed — `L*U` still reproduces
+  the original matrix, but `L` may not look triangular. `A4` happens not to need a row
+  swap, so this one looks textbook.
 
 ## Note on the random-number tasks
 
