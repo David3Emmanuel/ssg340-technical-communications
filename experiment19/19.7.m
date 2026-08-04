@@ -1,44 +1,44 @@
 %% BA for f(x) = x^2 + 10sin(x)
-nBats = 30; maxIter = 100; lb = -1; ub = 2;
-fmin = 0; fmax = 2; A = 0.5; r0 = 0.5;
+numBats = 30; maxIter = 100; lowerBound = -1; upperBound = 2;
+minFreq = 0; maxFreq = 2; loudness = 0.5; pulseRate = 0.5;
 
-pos = lb + rand(nBats,1)*(ub-lb);
-vel = zeros(nBats,1);
-[bestVal, idx] = min(arrayfun(@ba_obj, pos));
-best = pos(idx);
+positions = lowerBound + rand(numBats,1)*(upperBound-lowerBound);
+velocities = zeros(numBats,1);
+[bestValue, bestIdx] = min(arrayfun(@baObjective, positions));
+bestPosition = positions(bestIdx);
 history = zeros(maxIter,1);
 
-for iter = 1:maxIter
-    for i = 1:nBats
-        freq = fmin + (fmax-fmin)*rand;
-        vel(i) = vel(i) + (pos(i) - best)*freq;
-        newPos = pos(i) + vel(i);
-        newPos = max(min(newPos, ub), lb);
+for iterIdx = 1:maxIter
+    for batIdx = 1:numBats
+        frequency = minFreq + (maxFreq-minFreq)*rand;
+        velocities(batIdx) = velocities(batIdx) + (positions(batIdx) - bestPosition)*frequency;
+        candidatePos = positions(batIdx) + velocities(batIdx);
+        candidatePos = max(min(candidatePos, upperBound), lowerBound);
 
-        if rand > r0
-            newPos = best + 0.1*randn;
-            newPos = max(min(newPos, ub), lb);
+        if rand > pulseRate
+            candidatePos = bestPosition + 0.1*randn;
+            candidatePos = max(min(candidatePos, upperBound), lowerBound);
         end
 
-        if ba_obj(newPos) < ba_obj(pos(i)) && rand < A
-            pos(i) = newPos;
+        if baObjective(candidatePos) < baObjective(positions(batIdx)) && rand < loudness
+            positions(batIdx) = candidatePos;
         end
     end
-    [minVal, idx] = min(arrayfun(@ba_obj, pos));
-    if minVal < bestVal
-        bestVal = minVal;
-        best = pos(idx);
+    [currentBestValue, bestIdx] = min(arrayfun(@baObjective, positions));
+    if currentBestValue < bestValue
+        bestValue = currentBestValue;
+        bestPosition = positions(bestIdx);
     end
-    history(iter) = bestVal;
+    history(iterIdx) = bestValue;
 end
 
-fprintf('BA best: x=%.4f, f=%.4f\n', best, bestVal);
+fprintf('BA best: x=%.4f, f=%.4f\n', bestPosition, bestValue);
 figure; plot(history); xlabel('Iteration'); ylabel('Best Fitness'); title('BA Convergence'); grid on;
 
-function val = ba_obj(x)
-    f = x^2 + 10*sin(x);
-    g1 = 2 - x;         % >=0
-    g2 = x^2 + 1;       % <=0, note: x^2+1 always >0, so always penalized slightly
-    penalty = 100*max(0,-g1)^2 + 100*max(0,g2)^2;
-    val = f + penalty;
+function penalisedValue = baObjective(xVal)
+    baseValue = xVal^2 + 10*sin(xVal);
+    upperConstraint = 2 - xVal;         % >=0
+    squareConstraint = xVal^2 + 1;      % <=0, note: x^2+1 always >0, so always penalized slightly
+    penalty = 100*max(0,-upperConstraint)^2 + 100*max(0,squareConstraint)^2;
+    penalisedValue = baseValue + penalty;
 end

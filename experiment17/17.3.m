@@ -1,12 +1,12 @@
 fprintf('\n--- 17.3: Trapezoidal Rule ---\n');
-f = @(x) x.^2;
-a = 0; b = 4; h = 1;
-x = a:h:b;
-y = f(x);
+squareFunc = @(x) x.^2;
+lowerLimit = 0; upperLimit = 4; stepSize = 1;
+sampleX = lowerLimit:stepSize:upperLimit;
+sampleY = squareFunc(sampleX);
 
-integral_approx = h * (0.5*y(1) + sum(y(2:end-1)) + 0.5*y(end));
-integral_exact = (b^3 - a^3)/3;
+trapezoidalResult = stepSize * (0.5*sampleY(1) + sum(sampleY(2:end-1)) + 0.5*sampleY(end));
+exactResult = (upperLimit^3 - lowerLimit^3)/3;
 
-fprintf('Trapezoidal approximation: %.6f\n', integral_approx);
-fprintf('Exact solution: %.6f\n', integral_exact);
-fprintf('Error: %.6f\n', abs(integral_exact - integral_approx));
+fprintf('Trapezoidal approximation: %.6f\n', trapezoidalResult);
+fprintf('Exact solution: %.6f\n', exactResult);
+fprintf('Error: %.6f\n', abs(exactResult - trapezoidalResult));

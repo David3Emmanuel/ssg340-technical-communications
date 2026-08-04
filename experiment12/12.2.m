@@ -1,19 +1,19 @@
 %% Task 1: Lorenz System Definition + Task 2-5: Animate
-sigma = 10; rho = 28; beta = 8/3;
-dt = 0.01;
-steps = 5000;
+sigmaParam = 10; rhoParam = 28; betaParam = 8/3;
+timeStep = 0.01;
+numSteps = 5000;
 
-x = zeros(1, steps); y = zeros(1, steps); z = zeros(1, steps);
-x(1) = 1; y(1) = 1; z(1) = 1;   % initial conditions [1,1,1]
+lorenzX = zeros(1, numSteps); lorenzY = zeros(1, numSteps); lorenzZ = zeros(1, numSteps);
+lorenzX(1) = 1; lorenzY(1) = 1; lorenzZ(1) = 1;   % initial conditions [1,1,1]
 
-for i = 1:steps-1
-    dx = sigma * (y(i) - x(i));
-    dy = x(i) * (rho - z(i)) - y(i);
-    dz = x(i)*y(i) - beta*z(i);
+for stepIdx = 1:numSteps-1
+    deltaX = sigmaParam * (lorenzY(stepIdx) - lorenzX(stepIdx));
+    deltaY = lorenzX(stepIdx) * (rhoParam - lorenzZ(stepIdx)) - lorenzY(stepIdx);
+    deltaZ = lorenzX(stepIdx)*lorenzY(stepIdx) - betaParam*lorenzZ(stepIdx);
 
-    x(i+1) = x(i) + dx*dt;
-    y(i+1) = y(i) + dy*dt;
-    z(i+1) = z(i) + dz*dt;
+    lorenzX(stepIdx+1) = lorenzX(stepIdx) + deltaX*timeStep;
+    lorenzY(stepIdx+1) = lorenzY(stepIdx) + deltaY*timeStep;
+    lorenzZ(stepIdx+1) = lorenzZ(stepIdx) + deltaZ*timeStep;
 end
 
 figure;
@@ -23,11 +23,11 @@ title('Lorenz Attractor Animation');
 grid on; hold on;
 view(3);
 
-h = plot3(x(1), y(1), z(1), 'b', 'LineWidth', 1);
+traceHandle = plot3(lorenzX(1), lorenzY(1), lorenzZ(1), 'b', 'LineWidth', 1);
 
-for i = 1:500:steps   % update every 500 points as instructed
+for frameIdx = 1:500:numSteps   % update every 500 points as instructed
     randColor = rand(1,3);
-    set(h, 'XData', x(1:i), 'YData', y(1:i), 'ZData', z(1:i), 'Color', randColor);
+    set(traceHandle, 'XData', lorenzX(1:frameIdx), 'YData', lorenzY(1:frameIdx), 'ZData', lorenzZ(1:frameIdx), 'Color', randColor);
     drawnow;
 end
 

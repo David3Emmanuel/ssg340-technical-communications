@@ -1,79 +1,79 @@
 %% Task 1: Binomial Coefficient Calculation (For Loop)
 fprintf('--- Task 1: Binomial Coefficient ---\n');
-n = input('Enter value of n (0 to 170): ');
-r = input('Enter value of r (0 to n): ');
+topValue = input('Enter value of n (0 to 170): ');
+chooseValue = input('Enter value of r (0 to n): ');
 
-C = 1;
-for k = 0:(r-1)
-    C = C * (n - k);
+binomCoeff = 1;
+for termIdx = 0:(chooseValue-1)
+    binomCoeff = binomCoeff * (topValue - termIdx);
 end
-C = C / factorial(r);
+binomCoeff = binomCoeff / factorial(chooseValue);
 
-fprintf('C(%d, %d) = %d\n', n, r, C);
+fprintf('C(%d, %d) = %d\n', topValue, chooseValue, binomCoeff);
 
 %% Task 2: Modeling Temperature Change (While Loop)
 fprintf('\n--- Task 2: Temperature Change Simulation ---\n');
-T = input('Enter initial temperature T (C, e.g. 0 to 100): ');
-F = input('Enter ambient temperature F (C, e.g. 0 to 100): ');
-K = input('Enter cooling rate constant K (0 to 1, e.g. 0.05): ');
-dt = input('Enter time step dt in minutes (must be > 0, e.g. 1): ');
-t = 0;
+currentTemp = input('Enter initial temperature T (C, e.g. 0 to 100): ');
+ambientTemp = input('Enter ambient temperature F (C, e.g. 0 to 100): ');
+coolingConst = input('Enter cooling rate constant K (0 to 1, e.g. 0.05): ');
+coolStep = input('Enter time step dt in minutes (must be > 0, e.g. 1): ');
+elapsedMinutes = 0;
 
-while abs(T - F) > 0.5
-    T = T - K * (T - F) * dt;
-    t = t + dt;
-    fprintf('t = %.1f min, T = %.2f C\n', t, T);
+while abs(currentTemp - ambientTemp) > 0.5
+    currentTemp = currentTemp - coolingConst * (currentTemp - ambientTemp) * coolStep;
+    elapsedMinutes = elapsedMinutes + coolStep;
+    fprintf('t = %.1f min, T = %.2f C\n', elapsedMinutes, currentTemp);
 end
-fprintf('Temperature reached ambient after %.1f minutes\n', t);
+fprintf('Temperature reached ambient after %.1f minutes\n', elapsedMinutes);
 
 %% Task 3: Projectile Motion Simulation (While Loop)
 fprintf('\n--- Task 3: Projectile Motion ---\n');
-u = input('Enter initial velocity u in m/s (must be > 0, e.g. 60): ');
-angleDeg = input('Enter launch angle in degrees (0 to 90): ');
-theta = deg2rad(angleDeg);
-g = 9.8;
+launchSpeed = input('Enter initial velocity u in m/s (must be > 0, e.g. 60): ');
+launchAngleDeg = input('Enter launch angle in degrees (0 to 90): ');
+launchAngleRad = deg2rad(launchAngleDeg);
+gravity = 9.8;
 
-vx = u * cos(theta);
-vy = u * sin(theta);
+velocityX = launchSpeed * cos(launchAngleRad);
+velocityY = launchSpeed * sin(launchAngleRad);
 
-t = 0;
-dt = 0.1;
-x = 0;
-y = 0;
+flightTime = 0;
+flightStep = 0.1;
+posX = 0;
+posY = 0;
 
-while y >= 0
-    t = t + dt;
-    x = vx * t;
-    y = vy * t - 0.5 * g * t^2;
+while posY >= 0
+    flightTime = flightTime + flightStep;
+    posX = velocityX * flightTime;
+    posY = velocityY * flightTime - 0.5 * gravity * flightTime^2;
 end
 
-fprintf('Projectile hit the ground at t = %.2f s, x = %.2f m\n', t, x);
+fprintf('Projectile hit the ground at t = %.2f s, x = %.2f m\n', flightTime, posX);
 
 %% Task 4: Numerical Approximation of Pi Using a Series (For Loop)
 fprintf('\n--- Task 4: Pi Approximation via Series ---\n');
-n_terms = input('Enter number of terms n (must be > 0, e.g. 10000): ');
+numTerms = input('Enter number of terms n (must be > 0, e.g. 10000): ');
 
-piSum = 0;
-for k = 0:(n_terms-1)
-    piSum = piSum + ((-1)^k) / (2*k + 1);
+seriesSum = 0;
+for termIdx = 0:(numTerms-1)
+    seriesSum = seriesSum + ((-1)^termIdx) / (2*termIdx + 1);
 end
-piApprox = 4 * piSum;
+piApprox = 4 * seriesSum;
 
-fprintf('Approximated pi with %d terms: %.6f\n', n_terms, piApprox);
+fprintf('Approximated pi with %d terms: %.6f\n', numTerms, piApprox);
 fprintf('MATLAB built-in pi: %.6f\n', pi);
 fprintf('Difference: %.6f\n', abs(pi - piApprox));
 
 %% Task 5: Determining Doubling Time for an Investment (While Loop)
 fprintf('\n--- Task 5: Investment Doubling Time ---\n');
-initial = input('Enter initial investment amount (must be > 0, e.g. 1000): ');
-rate = input('Enter annual interest rate as decimal (0 to 1, e.g. 0.05): ');
-target = 2 * initial;
-balance = initial;
-years = 0;
+startingAmount = input('Enter initial investment amount (must be > 0, e.g. 1000): ');
+interestRate = input('Enter annual interest rate as decimal (0 to 1, e.g. 0.05): ');
+targetAmount = 2 * startingAmount;
+runningBalance = startingAmount;
+yearCount = 0;
 
-while balance < target
-    balance = balance * (1 + rate);
-    years = years + 1;
+while runningBalance < targetAmount
+    runningBalance = runningBalance * (1 + interestRate);
+    yearCount = yearCount + 1;
 end
 
-fprintf('Investment doubled after %d years (balance = %.2f)\n', years, balance);
+fprintf('Investment doubled after %d years (balance = %.2f)\n', yearCount, runningBalance);

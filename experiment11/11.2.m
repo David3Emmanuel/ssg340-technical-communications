@@ -2,35 +2,35 @@
 %% 11.2 Experiment 2: Random Walk Simulation
 disp('--- 11.2 Experiment 2: Random Walk ---');
 
-steps_array = [500, 1000];
+stepCounts = [500, 1000];
 
 figure('Name', '11.2 Random Walk Distributions');
-for i = 1:length(steps_array)
-    num_steps = steps_array(i);
-    positions = zeros(1, num_steps + 1);
+for runIdx = 1:length(stepCounts)
+    numSteps = stepCounts(runIdx);
+    positions = zeros(1, numSteps + 1);
     positions(1) = 40; % Starting position
-    
-    for s = 1:num_steps
+
+    for stepIdx = 1:numSteps
         if rand() < 0.5
-            positions(s+1) = positions(s) - 1; % Left
+            positions(stepIdx+1) = positions(stepIdx) - 1; % Left
         else
-            positions(s+1) = positions(s) + 1; % Right
+            positions(stepIdx+1) = positions(stepIdx) + 1; % Right
         end
     end
-    
+
     % Frequency distribution
-    min_pos = min(positions);
-    max_pos = max(positions);
-    pos_range = min_pos:max_pos;
-    freq = zeros(size(pos_range));
-    
-    for p = 1:length(pos_range)
-        freq(p) = sum(positions == pos_range(p));
+    minPosition = min(positions);
+    maxPosition = max(positions);
+    positionRange = minPosition:maxPosition;
+    frequencies = zeros(size(positionRange));
+
+    for binIdx = 1:length(positionRange)
+        frequencies(binIdx) = sum(positions == positionRange(binIdx));
     end
-    
-    subplot(2, 1, i);
-    bar(pos_range, freq, 'FaceColor', [0.2 0.6 0.8]);
-    title(sprintf('Ant Position Distribution after %d steps', num_steps));
+
+    subplot(2, 1, runIdx);
+    bar(positionRange, frequencies, 'FaceColor', [0.2 0.6 0.8]);
+    title(sprintf('Ant Position Distribution after %d steps', numSteps));
     xlabel('Position (x)');
     ylabel('Frequency');
     grid on;

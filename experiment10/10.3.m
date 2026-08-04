@@ -1,16 +1,16 @@
 %% Task 2: Test factorial for 1 to 10
 fprintf('--- Recursive Factorial ---\n');
-for n = 1:10
-    fprintf('%d! = %d\n', n, fact(n));
+for testValue = 1:10
+    fprintf('%d! = %d\n', testValue, recursiveFactorial(testValue));
 end
 
 %% Function (must be at end)
-function result = fact(n)
-    if n < 0
+function factValue = recursiveFactorial(inValue)
+    if inValue < 0
         error('n must be non-negative.');
-    elseif n == 0 || n == 1
-        result = 1;
+    elseif inValue == 0 || inValue == 1
+        factValue = 1;
     else
-        result = n * fact(n - 1);   % recursive call
+        factValue = inValue * recursiveFactorial(inValue - 1);   % recursive call
     end
 end

@@ -28,8 +28,8 @@ instructor gives exact figures, swap them in:
 | File | Assumed | Where |
 | --- | --- | --- |
 | 17.4.m | Growth rate `a = 0.5` | [line 2](17.4.m#L2) |
-| 17.6.m | Initial condition `v0 = [1; 1; 1]` | [line 7](17.6.m#L7) |
-| 17.8.m | Initial condition `v0 = [1; 1; 1]` | [line 7](17.8.m#L7) |
+| 17.6.m | Initial condition `initialState = [1; 1; 1]` | [line 7](17.6.m#L7) |
+| 17.8.m | Initial condition `initialState = [1; 1; 1]` | [line 7](17.8.m#L7) |
 | 17.9.m | `epsilonValues = [0.5, 1, 2]` | [line 2](17.9.m#L2) |
 
 Everything else — 17.5's `r = 0.8` and `N(0) = 1000`, 17.7's rod length, time span
@@ -83,7 +83,7 @@ Solves `dN/dt = aN`, `N(0) = 1000`, using step sizes `h = 2, 1, 0.5`, plotted ag
 the exact solution `N₀e^{at}`. Growth rate `a = 0.5` was assumed — see the table above.
 
 > ⚠️ **The `h = 2` curve stops short of the end.** `t = 0:2:5` gives `[0 2 4]`, so
-> that line ends at `t = 4` while the others reach `t = 5`. `tEnd` is not a multiple
+> that line ends at `t = 4` while the others reach `t = 5`. `endTime` is not a multiple
 > of `2`. Not a bug, but if you are asked why one line is shorter, that is why.
 
 All three Euler curves sit **below** the exact solution, and the gap shrinks as `h`
@@ -117,9 +117,9 @@ zero boundary conditions. Diffusivity is taken as `1`.
 
 Crank-Nicolson is **unconditionally stable**, so this will not blow up whatever grid
 you choose — which is its main advantage over an explicit scheme. With the current
-`nx = 20, nt = 100` the parameter `alpha` works out to exactly `1`. If the surface
+`numSpaceSteps = 20, numTimeSteps = 100` the parameter `diffusionRatio` works out to exactly `1`. If the surface
 shows small ripples near `t = 0` around the kink at `x = 0.5`, that is the scheme
-reacting to the sharp corner in the initial condition; raising `nt` smooths it out.
+reacting to the sharp corner in the initial condition; raising `numTimeSteps` smooths it out.
 
 ### 17.8 — System of ODEs (`ode45`)
 
@@ -171,11 +171,11 @@ Opens an empty set of axes, collects points you click with `ginput`, fits a cubi
 For a fixed number instead of open-ended, use:
 
 ```matlab
-[xData, yData] = ginput(10);   % collects exactly 10 points, no Enter needed
+[clickedX, clickedY] = ginput(10);   % collects exactly 10 points, no Enter needed
 ```
 
 > ⚠️ **Two ways this errors.** Pressing Enter without clicking anything leaves
-> `xData` empty and `polyfit` fails. Clicking fewer than four points makes `polyfit`
+> `clickedX` empty and `polyfit` fails. Clicking fewer than four points makes `polyfit`
 > warn that the polynomial is not unique. Click at least four — realistically eight or
 > more.
 

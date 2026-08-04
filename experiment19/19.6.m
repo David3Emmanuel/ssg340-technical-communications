@@ -1,34 +1,34 @@
 %% FA for f(x) = x^2 + 10sin(x)
-nFireflies = 30; maxIter = 100; lb = 0; ub = 2;
-alpha = 0.2; beta0 = 1; gamma = 1;
+numFireflies = 30; maxIter = 100; lowerBound = 0; upperBound = 2;
+randomStep = 0.2; baseAttraction = 1; absorptionCoeff = 1;
 
-pos = lb + rand(nFireflies,1)*(ub-lb);
+positions = lowerBound + rand(numFireflies,1)*(upperBound-lowerBound);
 history = zeros(maxIter,1);
 
-for iter = 1:maxIter
-    fitness = arrayfun(@fa_obj, pos);
-    for i = 1:nFireflies
-        for j = 1:nFireflies
-            if fitness(j) < fitness(i)
-                r = abs(pos(i) - pos(j));
-                beta = beta0 * exp(-gamma * r^2);
-                pos(i) = pos(i) + beta*(pos(j) - pos(i)) + alpha*(rand-0.5);
-                pos(i) = max(min(pos(i), ub), lb);
-                fitness(i) = fa_obj(pos(i));
+for iterIdx = 1:maxIter
+    fitness = arrayfun(@faObjective, positions);
+    for movingIdx = 1:numFireflies
+        for brighterIdx = 1:numFireflies
+            if fitness(brighterIdx) < fitness(movingIdx)
+                separation = abs(positions(movingIdx) - positions(brighterIdx));
+                attraction = baseAttraction * exp(-absorptionCoeff * separation^2);
+                positions(movingIdx) = positions(movingIdx) + attraction*(positions(brighterIdx) - positions(movingIdx)) + randomStep*(rand-0.5);
+                positions(movingIdx) = max(min(positions(movingIdx), upperBound), lowerBound);
+                fitness(movingIdx) = faObjective(positions(movingIdx));
             end
         end
     end
-    history(iter) = min(fitness);
+    history(iterIdx) = min(fitness);
 end
 
-[bestVal, idx] = min(arrayfun(@fa_obj, pos));
-fprintf('FA best: x=%.4f, f=%.4f\n', pos(idx), bestVal);
+[bestValue, bestIdx] = min(arrayfun(@faObjective, positions));
+fprintf('FA best: x=%.4f, f=%.4f\n', positions(bestIdx), bestValue);
 figure; plot(history); xlabel('Iteration'); ylabel('Best Fitness'); title('FA Convergence'); grid on;
 
-function val = fa_obj(x)
-    f = x^2 + 10*sin(x);
-    g1 = x - 1.5;      % >=0
-    g2 = x^2 - 2;      % <=0
-    penalty = 100*max(0,-g1)^2 + 100*max(0,g2)^2;
-    val = f + penalty;
+function penalisedValue = faObjective(xVal)
+    baseValue = xVal^2 + 10*sin(xVal);
+    lowerConstraint = xVal - 1.5;      % >=0
+    squareConstraint = xVal^2 - 2;     % <=0
+    penalty = 100*max(0,-lowerConstraint)^2 + 100*max(0,squareConstraint)^2;
+    penalisedValue = baseValue + penalty;
 end

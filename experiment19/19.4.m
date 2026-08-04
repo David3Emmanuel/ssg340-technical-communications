@@ -1,41 +1,41 @@
  %% DE for f(x) = x^2 + 10sin(x)
-popSize = 30; maxGen = 100; F = 0.8; CR = 0.9;
-lb = 0; ub = 3;
+popSize = 30; maxGen = 100; mutationFactor = 0.8; crossoverRate = 0.9;
+lowerBound = 0; upperBound = 3;
 
-pop = lb + rand(popSize,1)*(ub-lb);
+population = lowerBound + rand(popSize,1)*(upperBound-lowerBound);
 history = zeros(maxGen,1);
 
-for gen = 1:maxGen
-    for i = 1:popSize
-        idxs = randperm(popSize, 3);
-        while any(idxs == i)
-            idxs = randperm(popSize, 3);
+for genIdx = 1:maxGen
+    for memberIdx = 1:popSize
+        pickedIdx = randperm(popSize, 3);
+        while any(pickedIdx == memberIdx)
+            pickedIdx = randperm(popSize, 3);
         end
-        a = pop(idxs(1)); b = pop(idxs(2)); c = pop(idxs(3));
-        mutant = a + F*(b - c);
-        mutant = max(min(mutant, ub), lb);
+        baseVector = population(pickedIdx(1)); diffOne = population(pickedIdx(2)); diffTwo = population(pickedIdx(3));
+        mutantVector = baseVector + mutationFactor*(diffOne - diffTwo);
+        mutantVector = max(min(mutantVector, upperBound), lowerBound);
 
-        trial = pop(i);
-        if rand < CR
-            trial = mutant;
+        trialVector = population(memberIdx);
+        if rand < crossoverRate
+            trialVector = mutantVector;
         end
 
-        if de_obj(trial) < de_obj(pop(i))
-            pop(i) = trial;
+        if deObjective(trialVector) < deObjective(population(memberIdx))
+            population(memberIdx) = trialVector;
         end
     end
-    fitness = arrayfun(@de_obj, pop);
-    [bestVal, idx] = min(fitness);
-    history(gen) = bestVal;
+    fitness = arrayfun(@deObjective, population);
+    [bestValue, bestIdx] = min(fitness);
+    history(genIdx) = bestValue;
 end
 
-fprintf('DE best: x=%.4f, f=%.4f\n', pop(idx), history(end));
+fprintf('DE best: x=%.4f, f=%.4f\n', population(bestIdx), history(end));
 figure; plot(history); xlabel('Generation'); ylabel('Best Fitness'); title('DE Convergence'); grid on;
 
-function val = de_obj(x)
-    f = x^2 + 10*sin(x);
-    g1 = x^2 - 4;    % <=0
-    g2 = x - 2;      % >=0
-    penalty = 100*max(0,g1)^2 + 100*max(0,-g2)^2;
-    val = f + penalty;
+function penalisedValue = deObjective(xVal)
+    baseValue = xVal^2 + 10*sin(xVal);
+    squareConstraint = xVal^2 - 4;    % <=0
+    lowerConstraint = xVal - 2;       % >=0
+    penalty = 100*max(0,squareConstraint)^2 + 100*max(0,-lowerConstraint)^2;
+    penalisedValue = baseValue + penalty;
 end

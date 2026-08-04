@@ -2,87 +2,87 @@
 fprintf('--- 8.4 Experiment 4: Projectile Motion and Optimization ---\n');
 
 % Task 2: Prompt user for initial velocity and launch angle
-u = input('Enter initial velocity u (m/s, 10 to 100, e.g. 50): ');
-theta_deg = input('Enter launch angle theta (degrees, 1 to 89, e.g. 45): ');
-theta = theta_deg * (pi / 180); % Convert to radians
-g = 9.8;
+launchSpeed = input('Enter initial velocity u (m/s, 10 to 100, e.g. 50): ');
+launchAngleDeg = input('Enter launch angle theta (degrees, 1 to 89, e.g. 45): ');
+launchAngleRad = launchAngleDeg * (pi / 180); % Convert to radians
+gravity = 9.8;
 
-% Task 3 & 4: Simulate flight and output trajectory 
-t_proj = 0;
-dt_proj = 0.05;
-x = 0;
-y = 0;
+% Task 3 & 4: Simulate flight and output trajectory
+flightTime = 0;
+flightStep = 0.05;
+posX = 0;
+posY = 0;
 
-x_traj = x;
-y_traj = y;
+trajectoryX = posX;
+trajectoryY = posY;
 
 fprintf('\nTrajectory Data:\n');
 fprintf('Time (s) | X Position (m) | Y Position (m)\n');
 fprintf('------------------------------------------\n');
 
 % While loop until it hits the ground
-while y >= 0
+while posY >= 0
     % Print current step
-    fprintf('%8.2f | %14.2f | %14.2f\n', t_proj, x, y);
-    
+    fprintf('%8.2f | %14.2f | %14.2f\n', flightTime, posX, posY);
+
     % Update time and positions based on kinematic equations
-    t_proj = t_proj + dt_proj;
-    x = u * cos(theta) * t_proj;
-    y = u * sin(theta) * t_proj - 0.5 * g * t_proj^2;
-    
+    flightTime = flightTime + flightStep;
+    posX = launchSpeed * cos(launchAngleRad) * flightTime;
+    posY = launchSpeed * sin(launchAngleRad) * flightTime - 0.5 * gravity * flightTime^2;
+
     % Append to arrays for plotting if above ground
-    if y >= 0
-        x_traj(end+1) = x;
-        y_traj(end+1) = y;
+    if posY >= 0
+        trajectoryX(end+1) = posX;
+        trajectoryY(end+1) = posY;
     end
 end
 
 figure('Name', 'Experiment 4: Projectile Trajectory');
-plot(x_traj, y_traj, 'r-', 'LineWidth', 2);
-title(sprintf('Projectile Trajectory (u = %.1f m/s, \\theta = %.1f\\circ)', u, theta_deg));
+plot(trajectoryX, trajectoryY, 'r-', 'LineWidth', 2);
+title(sprintf('Projectile Trajectory (u = %.1f m/s, \\theta = %.1f\\circ)', launchSpeed, launchAngleDeg));
 xlabel('Horizontal Distance (m)');
 ylabel('Vertical Distance (m)');
 grid on;
 
 %% Optimization: Tasks 5, 6, 7
 fprintf('\n--- Optimization Analysis (Tasks 5 & 6) ---\n');
-angles_deg = 0:1:90;
-ranges = zeros(size(angles_deg));
-flight_times = zeros(size(angles_deg));
+sweepAnglesDeg = 0:1:90;
+rangeResults = zeros(size(sweepAnglesDeg));
+timeResults = zeros(size(sweepAnglesDeg));
 
 % Run simulation for various launch angles
-for i = 1:length(angles_deg)
-    ang_rad = angles_deg(i) * (pi / 180);
-    
+for sweepIdx = 1:length(sweepAnglesDeg)
+    sweepAngleRad = sweepAnglesDeg(sweepIdx) * (pi / 180);
+
     % Analytical time of flight (when y = 0)
-    t_end = (2 * u * sin(ang_rad)) / g;
-    flight_times(i) = t_end;
-    
+    hangTime = (2 * launchSpeed * sin(sweepAngleRad)) / gravity;
+    timeResults(sweepIdx) = hangTime;
+
     % Analytical max range
-    ranges(i) = u * cos(ang_rad) * t_end;
+    rangeResults(sweepIdx) = launchSpeed * cos(sweepAngleRad) * hangTime;
 end
 
 % Task 5c: Identify max range
-[max_R, idx_R] = max(ranges);
-best_angle_R = angles_deg(idx_R);
-fprintf('Max Range is %.2f m, achieved at a launch angle of %d degrees.\n', max_R, best_angle_R);
+[maxRange, maxRangeIdx] = max(rangeResults);
+bestRangeAngle = sweepAnglesDeg(maxRangeIdx);
+fprintf('Max Range is %.2f m, achieved at a launch angle of %d degrees.\n', maxRange, bestRangeAngle);
 
 % Task 6b: Identify max flight time
-[max_T, idx_T] = max(flight_times);
-best_angle_T = angles_deg(idx_T);
-fprintf('Max Flight Time is %.2f s, achieved at a launch angle of %d degrees.\n', max_T, best_angle_T);
+[maxHangTime, maxTimeIdx] = max(timeResults);
+bestTimeAngle = sweepAnglesDeg(maxTimeIdx);
+fprintf('Max Flight Time is %.2f s, achieved at a launch angle of %d degrees.\n', maxHangTime, bestTimeAngle);
 
 % Task 7: Plot Range and Flight Time vs Launch Angle
 figure('Name', 'Experiment 4: Range and Time vs Angle');
 subplot(2, 1, 1);
-plot(angles_deg, ranges, 'k-', 'LineWidth', 2);
+plot(sweepAnglesDeg, rangeResults, 'k-', 'LineWidth', 2);
 title('Horizontal Range vs. Launch Angle');
 xlabel('Launch Angle (degrees)');
 ylabel('Range (m)');
 grid on;
 
 subplot(2, 1, 2);
-plot(angles_deg, flight_times, 'm-', 'LineWidth', 2);
+plot(sweepAnglesDeg, timeResults, 'm-', 'LineWidth', 2);
 title('Time of Flight vs. Launch Angle');
 xlabel('Launch Angle (degrees)');
 ylabel('Time of Flight (s)');

@@ -96,12 +96,12 @@ interval, it has converged early — increase the iteration count or the mutatio
 
 ## ⚠ 19.5 uses `range`, which needs the Statistics Toolbox
 
-[19.5.m:16](19.5.m#L16) calls `range(archive)`. Despite how ordinary it looks, `range`
+[19.5.m:16](19.5.m#L16) calls `range(solutionArchive)`. Despite how ordinary it looks, `range`
 is **not** base MATLAB — it comes from the Statistics and Machine Learning Toolbox. If
 you get an "Undefined function" error there, substitute the base-MATLAB equivalent:
 
 ```matlab
-sigma = evapRate * (max(archive) - min(archive)) + 0.01;
+spread = evapRate * (max(solutionArchive) - min(solutionArchive)) + 0.01;
 ```
 
 That is exactly what `range` computes, so the behaviour is unchanged. Every other
@@ -110,7 +110,7 @@ script in this folder is pure base MATLAB.
 ## Notes on individual algorithms
 
 **19.1 GA** — Real-valued encoding with whole-arithmetic crossover
-(`alpha*p1 + (1-alpha)*p2`) rather than bit-string crossover, Gaussian mutation, and
+(`blendWeight*parentOne + (1-blendWeight)*parentTwo`) rather than bit-string crossover, Gaussian mutation, and
 elitism keeping the best two individuals each generation. Parents are drawn from the
 better half of the sorted population, which is the selection pressure.
 

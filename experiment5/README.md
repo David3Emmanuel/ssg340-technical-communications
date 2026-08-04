@@ -17,7 +17,7 @@ out-of-domain input with `try` / `catch`.
 The input range came from the lab sheet:
 
 ```matlab
-x_input = -1:0.1:1;   % 21 points from -1 to 1 in steps of 0.1
+inputRange = -1:0.1:1;   % 21 points from -1 to 1 in steps of 0.1
 ```
 
 `[-1, 1]` is not an arbitrary choice — it is the **valid domain of `acos` and
@@ -26,7 +26,7 @@ complex number rather than an error, which is why the script checks the range
 explicitly:
 
 ```matlab
-if any(x_input < -1 | x_input > 1)
+if any(inputRange < -1 | inputRange > 1)
     error('Input contains values outside the valid range [-1, 1] ...');
 end
 ```

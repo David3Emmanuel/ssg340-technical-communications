@@ -21,9 +21,9 @@ press **Run**. If your lab sheet specifies different figures, this is where they
 | --- | --- | --- |
 | 15.1.m | `num_tosses = 50` | [line 5](15.1.m#L5) |
 | 15.2.m | `num_rolls = 100` | [line 5](15.2.m#L5) |
-| 15.3.m | `num_walks`, `ship_distance`, `jetty_width`, the step probabilities | [lines 5–7](15.3.m#L5-L7), [lines 22–27](15.3.m#L22-L27) |
-| 15.4.m | `total_intervals`, `prob_arrival`, the departure cap | [lines 5–7](15.4.m#L5-L7), [line 28](15.4.m#L28) |
-| 15.5.m | `N0`, `time_mins`, `decay_rate` | [lines 5–7](15.5.m#L5-L7) |
+| 15.3.m | `numWalks`, `shipDistance`, `jettyWidth`, the step probabilities | [lines 5–7](15.3.m#L5-L7), [lines 22–27](15.3.m#L22-L27) |
+| 15.4.m | `totalIntervals`, `arrivalProb`, the departure cap | [lines 5–7](15.4.m#L5-L7), [line 28](15.4.m#L28) |
+| 15.5.m | `initialAtoms`, `totalMinutes`, `decayRate` | [lines 5–7](15.5.m#L5-L7) |
 
 > ⚠️ **Every script here uses `rand`, so your numbers change on every run.** That is
 > the entire point of Monte Carlo simulation, not a fault — but it does mean the
@@ -54,14 +54,14 @@ fair six-sided die it is `√(35/12) ≈ 1.71`, worth quoting in your report.
 
 ### 15.3 — the drawn boundary and the actual boundary differ by one step
 
-The loop continues while `abs(x) <= jetty_width`, so it only stops once `|x|` reaches
+The loop continues while `abs(lateralPos) <= jettyWidth`, so it only stops once `|x|` reaches
 **4**, while the red dashed lines are drawn at **±3**. Trajectories will therefore
 appear to cross the boundary by one step before terminating.
 
 Not a crash, but it looks wrong on the plot. Either fix is one character:
 
 ```matlab
-while y < ship_distance && abs(x) < jetty_width   % stop at ±3, matching the lines
+while forwardPos < shipDistance && abs(lateralPos) < jettyWidth   % stop at ±3
 ```
 
 Also note the walk is biased: `40%` forward against `60%` sideways combined, so the
@@ -83,7 +83,7 @@ roughly steady rather than draining** — cars arrive as fast as they leave.
 The backlog built during the 30 seconds of red therefore persists to the end of the
 simulation. That is a genuine finding about the intersection, not a bug: the signal
 timing is right at capacity. Raise the departure cap at [line 28](15.4.m#L28) or lower
-`prob_arrival` and you will see the queue actually clear.
+`arrivalProb` and you will see the queue actually clear.
 
 The light schedule is correct, if slightly opaque: `mod(time_sec - 1, 60) < 30` gives
 Red at `t = 10, 20, 30` and Green at `t = 40, 50, 60`.

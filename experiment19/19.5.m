@@ -1,34 +1,34 @@
 %% ACO for f(x) = x^2 + 10sin(x), continuous domain
-nAnts = 30; maxIter = 100; lb = 0; ub = 3;
+numAnts = 30; maxIter = 100; lowerBound = 0; upperBound = 3;
 evapRate = 0.1;
 
-archive = lb + rand(nAnts,1)*(ub-lb);
+solutionArchive = lowerBound + rand(numAnts,1)*(upperBound-lowerBound);
 history = zeros(maxIter,1);
 
-for iter = 1:maxIter
-    fitness = arrayfun(@aco_obj, archive);
-    [sortedFit, sortIdx] = sort(fitness);
-    archive = archive(sortIdx);
+for iterIdx = 1:maxIter
+    fitness = arrayfun(@acoObjective, solutionArchive);
+    [sortedFitness, rankOrder] = sort(fitness);
+    solutionArchive = solutionArchive(rankOrder);
 
-    newArchive = archive;
-    for i = 1:nAnts
-        meanPos = archive(randi(nAnts/2));   % sample from better half (pheromone-guided)
-        sigma = evapRate * range(archive) + 0.01;
-        newArchive(i) = meanPos + randn*sigma;
-        newArchive(i) = max(min(newArchive(i), ub), lb);
+    nextArchive = solutionArchive;
+    for antIdx = 1:numAnts
+        guidePosition = solutionArchive(randi(numAnts/2));   % sample from better half (pheromone-guided)
+        spread = evapRate * range(solutionArchive) + 0.01;
+        nextArchive(antIdx) = guidePosition + randn*spread;
+        nextArchive(antIdx) = max(min(nextArchive(antIdx), upperBound), lowerBound);
     end
-    archive = newArchive;
-    history(iter) = min(arrayfun(@aco_obj, archive));
+    solutionArchive = nextArchive;
+    history(iterIdx) = min(arrayfun(@acoObjective, solutionArchive));
 end
 
-[bestVal, idx] = min(arrayfun(@aco_obj, archive));
-fprintf('ACO best: x=%.4f, f=%.4f\n', archive(idx), bestVal);
+[bestValue, bestIdx] = min(arrayfun(@acoObjective, solutionArchive));
+fprintf('ACO best: x=%.4f, f=%.4f\n', solutionArchive(bestIdx), bestValue);
 figure; plot(history); xlabel('Iteration'); ylabel('Best Fitness'); title('ACO Convergence'); grid on;
 
-function val = aco_obj(x)
-    f = x^2 + 10*sin(x);
-    g1 = x - 1;    % >=0
-    g2 = 3 - x;    % >=0
-    penalty = 100*max(0,-g1)^2 + 100*max(0,-g2)^2;
-    val = f + penalty;
+function penalisedValue = acoObjective(xVal)
+    baseValue = xVal^2 + 10*sin(xVal);
+    lowerConstraint = xVal - 1;    % >=0
+    upperConstraint = 3 - xVal;    % >=0
+    penalty = 100*max(0,-lowerConstraint)^2 + 100*max(0,-upperConstraint)^2;
+    penalisedValue = baseValue + penalty;
 end

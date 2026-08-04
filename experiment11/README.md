@@ -36,13 +36,13 @@ ranges for a stable simulation:
 > `dt` (e.g., if `dt = 0.5`, an interval of `2.0` works perfectly).
 
 This matters more than it looks. The script decides when to print by testing
-`mod(t, out_interval) < 1e-5` — if your interval is not a multiple of `dt`, the
+`mod(t, outputInterval) < 1e-5` — if your interval is not a multiple of `dt`, the
 simulation time never lands close enough to a multiple and **you get almost no printed
 output at all**. The plot still draws correctly, so an empty-looking table is the
 symptom to watch for.
 
-Everything else in `11.1.m` is hardcoded and does not need changing: `T0 = 30`,
-`F = 4`, the two cooling constants `K1 = 0.02` and `K2 = 0.05`, and `t_max = 200`.
+Everything else in `11.1.m` is hardcoded and does not need changing: `startTemp = 30`,
+`fridgeTemp = 4`, the two cooling constants `slowConst = 0.02` and `fastConst = 0.05`, and `maxTime = 200`.
 
 > ⚠️ **`11.1.m` stops and waits for you to click the figure.** The last four lines call
 > `gtext`, which parks the script until you click a spot on the graph to drop each
@@ -56,7 +56,7 @@ Everything else in `11.1.m` is hardcoded and does not need changing: `T0 = 30`,
 ### Experiment 11.2 — Random Walk
 
 Starts at `x = 40` and runs the walk for `500` then `1000` steps, one subplot each,
-driven by `steps_array = [500, 1000]` at [line 5](11.2.m#L5). Add another value to
+driven by `stepCounts = [500, 1000]` at [line 5](11.2.m#L5). Add another value to
 that array for a third length — the loop and subplot indices follow it automatically.
 
 Because a random walk uses `rand`, **your distribution will be different every run**.
@@ -69,8 +69,8 @@ report.
 Marks are generated rather than typed:
 
 ```matlab
-marks = randi([0, 100], 1, 150);   % 150 students, marks from 0 to 100
-bins  = [10, 20];                   % the two bin counts to compare
+studentMarks = randi([0, 100], 1, 150);   % 150 students, marks from 0 to 100
+binCounts    = [10, 20];                  % the two bin counts to compare
 ```
 
 `randi` gives whole numbers, which is what you want for marks. The same `rng(0);` tip
@@ -86,7 +86,7 @@ leave it unless your lecturer says otherwise.
 Two parts. A five-element array printed after every pass so you can watch the sort
 work, then a 1000-element timing comparison.
 
-The timing part is set up correctly for a fair test — `large_data` is generated once
+The timing part is set up correctly for a fair test — `sourceData` is generated once
 and copied into two separate variables, so bubble sort and `sort` operate on
 **identical** data rather than two different random arrays.
 
@@ -99,7 +99,7 @@ instantly.
 
 Student names, IDs and marks are hardcoded when the structure and cell arrays are
 initialised, as the manual asks. Two students are defined directly, then two more are
-built dynamically through `create_students`.
+built dynamically through `createStudents`.
 
 That helper takes `varargin` in groups of three (Name, ID, Marks) and errors if you
 pass a number of arguments that is not a multiple of three — so if you add a student,

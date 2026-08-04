@@ -20,18 +20,18 @@ The manual leaves the Lissajous parameters up to you. We picked reasonable ones,
 they sit on a single line so they are easy to find:
 
 ```matlab
-A = 3; B = 2; a = 4; b = 5; delta = pi/2;   % change these to explore different curves
+ampX = 3; ampY = 2; freqX = 4; freqY = 5; phaseShift = pi/2;   % change these
 ```
 
-The shape you get is governed by the **ratio** `a:b` and the phase `delta`. Equal
+The shape you get is governed by the **ratio** `freqX:freqY` and the phase `phaseShift`. Equal
 frequencies give an ellipse; simple ratios like 3:2 or 4:5 give the classic woven
 patterns. Change them freely — there is no wrong answer here.
 
-Task 2 has a second, independent set in the `params` matrix at
-[12.1.m:14](12.1.m#L14), one curve per row in the order `A B a b delta`. Add a row to
+Task 2 has a second, independent set in the `curveParams` matrix at
+[12.1.m:14](12.1.m#L14), one curve per row in the order `ampX ampY freqX freqY phaseShift`. Add a row to
 plot a fourth curve; the loop and the `gobjects` array size themselves off that
 matrix automatically. If you do add one, note that
-[Task 3](12.1.m#L26-L28) styles `handles(1)` to `handles(3)` by hand and will not
+[Task 3](12.1.m#L26-L28) styles `curveHandles(1)` to `curveHandles(3)` by hand and will not
 touch a fourth.
 
 ### 12.2 — the physical constants are given, the simulation settings are not
@@ -39,17 +39,17 @@ touch a fourth.
 From the manual, leave these alone:
 
 ```matlab
-sigma = 10; rho = 28; beta = 8/3;   % the classic Lorenz parameters
-x(1) = 1; y(1) = 1; z(1) = 1;       % initial conditions [1,1,1]
+sigmaParam = 10; rhoParam = 28; betaParam = 8/3;   % the classic Lorenz parameters
+lorenzX(1) = 1; lorenzY(1) = 1; lorenzZ(1) = 1;   % initial conditions [1,1,1]
 ```
 
-But `dt = 0.01` and `steps = 5000` were **our choice** — the manual does not specify
+But `timeStep = 0.01` and `numSteps = 5000` were **our choice** — the manual does not specify
 them. They give a good-looking attractor, so there is no need to change them unless
 your sheet says otherwise.
 
 Two things worth knowing if you do experiment:
 
-- The solver is plain **Euler integration**, which accumulates error. Increase `dt`
+- The solver is plain **Euler integration**, which accumulates error. Increase `timeStep`
   much beyond `0.01` and the trajectory degrades or flies off entirely.
 - Lorenz is **chaotic**, so a tiny change to the initial conditions produces a
   completely different path. Both paths are equally valid — that sensitivity is the
@@ -61,15 +61,15 @@ Two things worth knowing if you do experiment:
 a standard `-2π` to `2π`:
 
 ```matlab
-reRange = -2*pi:0.1:2*pi;
-imRange = -2*pi:0.1:2*pi;
+realAxis = -2*pi:0.1:2*pi;
+imagAxis = -2*pi:0.1:2*pi;
 ```
 
 Change both if your manual specifies something different. Keep the step at `0.1` or
 coarser — halving it quadruples the number of grid points and the surface plots get
 slow.
 
-> 📝 **About the singularity guard.** [12.4.m:8](12.4.m#L8) sets `F(Z == 0) = 1` to
+> 📝 **About the singularity guard.** [12.4.m:8](12.4.m#L8) sets `funcValues(complexGrid == 0) = 1` to
 > handle `z = 0`. Two notes: the true limit as `z → 0` is **i**, not 1 (the code's own
 > comment says as much), and with this particular grid the line never actually runs —
 > stepping by `0.1` from `-2π` never lands exactly on zero, so no grid point is ever

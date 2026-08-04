@@ -1,8 +1,8 @@
 %% Task 1: Create and Save a Figure
-x = 0:0.1:2*pi;
-y = sin(x);
+sampleX = 0:0.1:2*pi;
+sampleY = sin(sampleX);
 figure;
-plot(x, y);
+plot(sampleX, sampleY);
 title('Sine Wave');
 savefig('sine_wave.fig');
 
@@ -18,11 +18,11 @@ print(gcf, 'sine_wave_hq.pdf', '-dpdf', '-r300');
 print(gcf, '-clipboard', '-dbitmap');
 
 %% Task 5: Batch Processing Multiple Figures
-numFigs = 3;
-for i = 1:numFigs
+numFigures = 3;
+for figIdx = 1:numFigures
     figure;
-    plot(x, sin(x + i));   % vary phase for each figure
-    title(['Batch Figure ', num2str(i)]);
-    filename = sprintf('batch_figure_%d.png', i);
-    saveas(gcf, filename);
+    plot(sampleX, sin(sampleX + figIdx));   % vary phase for each figure
+    title(['Batch Figure ', num2str(figIdx)]);
+    outputName = sprintf('batch_figure_%d.png', figIdx);
+    saveas(gcf, outputName);
 end

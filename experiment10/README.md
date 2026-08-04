@@ -21,11 +21,11 @@ different values, edit them in the file:
 
 | File | What you can change | Where |
 | --- | --- | --- |
-| 10.1.m | Time range `t`, the oscillator frequencies | [lines 2–3](10.1.m#L2-L3), [line 12](10.1.m#L12) |
-| 10.2.m | Initial guess `x0`, tolerance `tol`, iteration cap `maxIter` | [lines 2–4](10.2.m#L2-L4) |
+| 10.1.m | Time range `timeVec`, the oscillator frequencies | [lines 2–3](10.1.m#L2-L3), [line 12](10.1.m#L12) |
+| 10.2.m | Initial guess `startGuess`, `tolerance`, iteration cap `maxIter` | [lines 2–4](10.2.m#L2-L4) |
 | 10.3.m | The `1:10` test range | [line 3](10.3.m#L3) |
-| 10.4.m | `n = 5`, the value traced through the recursion | [line 3](10.4.m#L3) |
-| 10.6.m | The `xVals` range | [line 4](10.6.m#L4) |
+| 10.4.m | `testValue = 5`, traced through the recursion | [line 3](10.4.m#L3) |
+| 10.6.m | The `testPoints` range | [line 4](10.6.m#L4) |
 
 ## ⚠ 10.6.m needs the Statistics Toolbox
 
@@ -63,14 +63,14 @@ busier and less regular, which is the comparison the third figure is there to sh
 
 Newton's method breaks when the derivative hits zero, since the update divides by it.
 Here the derivative is `3x² + 1`, which is at least `1` for every real `x`, so that
-failure mode cannot occur no matter what `x0` you start from. Convergence is fast —
+failure mode cannot occur no matter what `startGuess` you start from. Convergence is fast —
 expect the root near `1.213` in a handful of iterations, well short of the
 `maxIter = 100` cap.
 
 ### 10.6.m — the approximation only works for x ≥ 0
 
 The Zelen & Severo formula in `normCDFApprox` is defined for non-negative `x` only,
-which is why `xVals` starts at `0`. If you extend the range into negative numbers the
+which is why `testPoints` starts at `0`. If you extend the range into negative numbers the
 approximation returns visibly wrong values while `normcdf` stays correct, so the
 `diff` column blows up. For negative `x`, use the symmetry `Φ(−x) = 1 − Φ(x)`
 instead.

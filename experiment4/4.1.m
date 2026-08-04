@@ -1,6 +1,6 @@
 
 
-g = 9.8; % Gravity (m/s^2)
+gravity = 9.8; % Gravity (m/s^2)
 
 % Initialize Figure with 4 Subplots for comprehensive testing
 figure('Name', 'Experiment 1: Comprehensive Projectile Motion Analysis', 'Position', [100, 100, 1000, 800]);
@@ -8,47 +8,47 @@ figure('Name', 'Experiment 1: Comprehensive Projectile Motion Analysis', 'Positi
 % =========================================================================
 % 1. Standard Trajectory vs. Air Resistance Enhancement (Steps 2, 3, 5)
 % =========================================================================
-v0_std = 50;
-theta_std_deg = 45;
-theta_std = (pi / 180) * theta_std_deg;
+baseVelocity = 50;
+baseAngleDeg = 45;
+baseAngleRad = (pi / 180) * baseAngleDeg;
 
-t_max_std = (2 * v0_std * sin(theta_std)) / g;
-t_std = linspace(0, t_max_std, 200);
+flightTimeBase = (2 * baseVelocity * sin(baseAngleRad)) / gravity;
+timeBase = linspace(0, flightTimeBase, 200);
 
-x_std = v0_std .* cos(theta_std) .* t_std;
-y_std = v0_std .* sin(theta_std) .* t_std - 0.5 .* g .* t_std.^2;
+xBase = baseVelocity .* cos(baseAngleRad) .* timeBase;
+yBase = baseVelocity .* sin(baseAngleRad) .* timeBase - 0.5 .* gravity .* timeBase.^2;
 
 % Air Resistance (Euler Method)
-m = 1.0;
-b = 0.25;
-dt = t_std(2) - t_std(1);
+mass = 1.0;
+dragCoeff = 0.25;
+timeStep = timeBase(2) - timeBase(1);
 
-x_air = zeros(1, length(t_std));
-y_air = zeros(1, length(t_std));
-vx = v0_std * cos(theta_std);
-vy = v0_std * sin(theta_std);
+xDrag = zeros(1, length(timeBase));
+yDrag = zeros(1, length(timeBase));
+velX = baseVelocity * cos(baseAngleRad);
+velY = baseVelocity * sin(baseAngleRad);
 
-for i = 2:length(t_std)
-    ax = -(b/m) * vx;
-    ay = -g - (b/m) * vy;
-    
-    vx = vx + ax * dt;
-    vy = vy + ay * dt;
-    
-    x_air(i) = x_air(i-1) + vx * dt;
-    y_air(i) = y_air(i-1) + vy * dt;
-    
-    if y_air(i) < 0
-        x_air = x_air(1:i);
-        y_air = y_air(1:i);
+for stepIdx = 2:length(timeBase)
+    accelX = -(dragCoeff/mass) * velX;
+    accelY = -gravity - (dragCoeff/mass) * velY;
+
+    velX = velX + accelX * timeStep;
+    velY = velY + accelY * timeStep;
+
+    xDrag(stepIdx) = xDrag(stepIdx-1) + velX * timeStep;
+    yDrag(stepIdx) = yDrag(stepIdx-1) + velY * timeStep;
+
+    if yDrag(stepIdx) < 0
+        xDrag = xDrag(1:stepIdx);
+        yDrag = yDrag(1:stepIdx);
         break;
     end
 end
 
 subplot(2, 2, 1);
-plot(x_std, y_std, 'b-', 'LineWidth', 1.5);
+plot(xBase, yBase, 'b-', 'LineWidth', 1.5);
 hold on;
-plot(x_air, y_air, 'r--', 'LineWidth', 1.5);
+plot(xDrag, yDrag, 'r--', 'LineWidth', 1.5);
 title('Standard vs Air Resistance (v_0=50, \theta=45°)');
 xlabel('Horizontal Distance (m)');
 ylabel('Vertical Distance (m)');
@@ -61,16 +61,16 @@ hold off;
 % =========================================================================
 subplot(2, 2, 2);
 hold on;
-v0_constant = 50;
-test_angles = [30, 45, 60, 75];
+fixedVelocity = 50;
+angleSweepDeg = [30, 45, 60, 75];
 
-for i = 1:length(test_angles)
-    theta = (pi / 180) * test_angles(i);
-    t_max = (2 * v0_constant * sin(theta)) / g;
-    t = linspace(0, t_max, 200);
-    x = v0_constant .* cos(theta) .* t;
-    y = v0_constant .* sin(theta) .* t - 0.5 .* g .* t.^2;
-    plot(x, y, 'LineWidth', 1.5, 'DisplayName', sprintf('%d°', test_angles(i)));
+for sweepIdx = 1:length(angleSweepDeg)
+    sweepAngleRad = (pi / 180) * angleSweepDeg(sweepIdx);
+    sweepFlightTime = (2 * fixedVelocity * sin(sweepAngleRad)) / gravity;
+    sweepTime = linspace(0, sweepFlightTime, 200);
+    sweepX = fixedVelocity .* cos(sweepAngleRad) .* sweepTime;
+    sweepY = fixedVelocity .* sin(sweepAngleRad) .* sweepTime - 0.5 .* gravity .* sweepTime.^2;
+    plot(sweepX, sweepY, 'LineWidth', 1.5, 'DisplayName', sprintf('%d°', angleSweepDeg(sweepIdx)));
 end
 
 title('Varying Launch Angles (v_0 = 50 m/s)');
@@ -85,17 +85,17 @@ hold off;
 % =========================================================================
 subplot(2, 2, 3);
 hold on;
-theta_constant_deg = 45;
-theta_constant = (pi / 180) * theta_constant_deg;
-test_velocities = [20, 30, 40, 50];
+fixedAngleDeg = 45;
+fixedAngleRad = (pi / 180) * fixedAngleDeg;
+velocitySweep = [20, 30, 40, 50];
 
-for i = 1:length(test_velocities)
-    v0 = test_velocities(i);
-    t_max = (2 * v0 * sin(theta_constant)) / g;
-    t = linspace(0, t_max, 200);
-    x = v0 .* cos(theta_constant) .* t;
-    y = v0 .* sin(theta_constant) .* t - 0.5 .* g .* t.^2;
-    plot(x, y, 'LineWidth', 1.5, 'DisplayName', sprintf('%d m/s', v0));
+for velIdx = 1:length(velocitySweep)
+    currentVelocity = velocitySweep(velIdx);
+    velFlightTime = (2 * currentVelocity * sin(fixedAngleRad)) / gravity;
+    velTime = linspace(0, velFlightTime, 200);
+    velTrajX = currentVelocity .* cos(fixedAngleRad) .* velTime;
+    velTrajY = currentVelocity .* sin(fixedAngleRad) .* velTime - 0.5 .* gravity .* velTime.^2;
+    plot(velTrajX, velTrajY, 'LineWidth', 1.5, 'DisplayName', sprintf('%d m/s', currentVelocity));
 end
 
 title('Varying Initial Velocities (\theta = 45°)');
@@ -112,38 +112,38 @@ subplot(2, 2, 4);
 hold on;
 
 % Edge cases array setup: [Velocity, Angle_in_Degrees, Description]
-edge_cases = {
+edgeCases = {
     50, 90, '90° (Straight Up)';
     50, 0,  '0° (Horizontal)';
     0,  45, 'v_0 = 0 m/s'
 };
 
-for i = 1:size(edge_cases, 1)
-    v0_edge = edge_cases{i, 1};
-    theta_edge = (pi / 180) * edge_cases{i, 2};
-    label = edge_cases{i, 3};
-    
+for edgeIdx = 1:size(edgeCases, 1)
+    edgeVelocity = edgeCases{edgeIdx, 1};
+    edgeAngleRad = (pi / 180) * edgeCases{edgeIdx, 2};
+    edgeLabel = edgeCases{edgeIdx, 3};
+
     % Adjust max time for visualization if it doesn't leave the ground
-    if v0_edge == 0 || theta_edge == 0
-        t_max_edge = 2; 
+    if edgeVelocity == 0 || edgeAngleRad == 0
+        edgeFlightTime = 2;
     else
-        t_max_edge = (2 * v0_edge * sin(theta_edge)) / g;
+        edgeFlightTime = (2 * edgeVelocity * sin(edgeAngleRad)) / gravity;
     end
-    
-    t_edge = linspace(0, t_max_edge, 200);
-    y_vals = v0_edge .* sin(theta_edge) .* t_edge - 0.5 .* g .* t_edge.^2;
-    
+
+    edgeTime = linspace(0, edgeFlightTime, 200);
+    edgeHeights = edgeVelocity .* sin(edgeAngleRad) .* edgeTime - 0.5 .* gravity .* edgeTime.^2;
+
     % Filter to only show trajectory above or equal to ground level
-    valid_idx = y_vals >= 0;
-    x = v0_edge .* cos(theta_edge) .* t_edge(valid_idx);
-    y = y_vals(valid_idx);
-    
+    aboveGround = edgeHeights >= 0;
+    edgeX = edgeVelocity .* cos(edgeAngleRad) .* edgeTime(aboveGround);
+    edgeY = edgeHeights(aboveGround);
+
     % If object never moves, plot a point at origin
-    if isempty(x)
-        x = 0; y = 0; 
+    if isempty(edgeX)
+        edgeX = 0; edgeY = 0;
     end
-    
-    plot(x, y, 'LineWidth', 1.5, 'DisplayName', label);
+
+    plot(edgeX, edgeY, 'LineWidth', 1.5, 'DisplayName', edgeLabel);
 end
 
 title('Edge Cases');

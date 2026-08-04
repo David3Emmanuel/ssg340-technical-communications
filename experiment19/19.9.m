@@ -1,42 +1,42 @@
 %% ABC for f(x) = x^2 + 10sin(x)
-nBees = 30; maxIter = 100; lb = -0.5; ub = 2; limit = 20;
+numBees = 30; maxIter = 100; lowerBound = -0.5; upperBound = 2; abandonLimit = 20;
 
-pos = lb + rand(nBees,1)*(ub-lb);
-trials = zeros(nBees,1);
+positions = lowerBound + rand(numBees,1)*(upperBound-lowerBound);
+trialCounts = zeros(numBees,1);
 history = zeros(maxIter,1);
 
-for iter = 1:maxIter
+for iterIdx = 1:maxIter
     % Employed bees
-    for i = 1:nBees
-        k = randi(nBees);
-        while k == i, k = randi(nBees); end
-        phi = 2*rand - 1;
-        newPos = pos(i) + phi*(pos(i) - pos(k));
-        newPos = max(min(newPos, ub), lb);
-        if abc_obj(newPos) < abc_obj(pos(i))
-            pos(i) = newPos; trials(i) = 0;
+    for beeIdx = 1:numBees
+        partnerIdx = randi(numBees);
+        while partnerIdx == beeIdx, partnerIdx = randi(numBees); end
+        stepScale = 2*rand - 1;
+        candidatePos = positions(beeIdx) + stepScale*(positions(beeIdx) - positions(partnerIdx));
+        candidatePos = max(min(candidatePos, upperBound), lowerBound);
+        if abcObjective(candidatePos) < abcObjective(positions(beeIdx))
+            positions(beeIdx) = candidatePos; trialCounts(beeIdx) = 0;
         else
-            trials(i) = trials(i) + 1;
+            trialCounts(beeIdx) = trialCounts(beeIdx) + 1;
         end
     end
     % Scout bees
-    for i = 1:nBees
-        if trials(i) > limit
-            pos(i) = lb + rand*(ub-lb);
-            trials(i) = 0;
+    for beeIdx = 1:numBees
+        if trialCounts(beeIdx) > abandonLimit
+            positions(beeIdx) = lowerBound + rand*(upperBound-lowerBound);
+            trialCounts(beeIdx) = 0;
         end
     end
-    history(iter) = min(arrayfun(@abc_obj, pos));
+    history(iterIdx) = min(arrayfun(@abcObjective, positions));
 end
 
-[bestVal, idx] = min(arrayfun(@abc_obj, pos));
-fprintf('ABC best: x=%.4f, f=%.4f\n', pos(idx), bestVal);
+[bestValue, bestIdx] = min(arrayfun(@abcObjective, positions));
+fprintf('ABC best: x=%.4f, f=%.4f\n', positions(bestIdx), bestValue);
 figure; plot(history); xlabel('Iteration'); ylabel('Best Fitness'); title('ABC Convergence'); grid on;
 
-function val = abc_obj(x)
-    f = x^2 + 10*sin(x);
-    g1 = x - 1.5;    % >=0
-    g2 = 2 - x;      % >=0
-    penalty = 100*max(0,-g1)^2 + 100*max(0,-g2)^2;
-    val = f + penalty;
+function penalisedValue = abcObjective(xVal)
+    baseValue = xVal^2 + 10*sin(xVal);
+    lowerConstraint = xVal - 1.5;    % >=0
+    upperConstraint = 2 - xVal;      % >=0
+    penalty = 100*max(0,-lowerConstraint)^2 + 100*max(0,-upperConstraint)^2;
+    penalisedValue = baseValue + penalty;
 end

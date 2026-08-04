@@ -31,18 +31,18 @@ incomes = [5000, 15000, 25000, 8000, 18000, 30000]; % <-- your own incomes
 Replace the `incomes` array with the incomes your lab sheet specifies. If your sheet
 also gives different band limits or rates, update the three blocks that follow —
 the thresholds `10000` / `20000` and the rates `0.10` / `0.20` / `0.50` all appear
-explicitly in the `idx1`, `idx2`, `idx3` sections.
+explicitly in the `bandOne`, `bandTwo`, `bandThree` sections.
 
 ### Task 2 — Loan repayments
 
 ```matlab
-A = 100000;                  % <-- your own loan amount
-n = 12;                      % payments per year (12 = monthly)
-r_vals = [0.03, 0.05, 0.07]; % <-- your own interest rates
-k_vals = [10; 20; 30];       % <-- your own loan terms in years
+loanAmount = 100000;           % <-- your own loan amount
+paymentsPerYear = 12;          % payments per year (12 = monthly)
+rateList = [0.03, 0.05, 0.07]; % <-- your own interest rates
+termList = [10; 20; 30];       % <-- your own loan terms in years
 ```
 
-Keep `r_vals` as a **row** vector and `k_vals` as a **column** vector. That
+Keep `rateList` as a **row** vector and `termList` as a **column** vector. That
 orientation is what makes `meshgrid` produce a grid where every rate is paired with
 every term, giving one repayment per combination. If you flip them, the result
 matrix comes out transposed.
@@ -50,18 +50,18 @@ matrix comes out transposed.
 ### Task 3 — Random number statistics
 
 ```matlab
-r_rand = rand(1, 10000);   % <-- sample size, if your sheet specifies one
+randomSamples = rand(1, 10000);   % <-- sample size, if your sheet specifies one
 ```
 
-The threshold `0.5` and the `expected_value = 0.5` are tied to each other — if your
+The threshold `0.5` and the `expectedShare = 0.5` are tied to each other — if your
 sheet asks for a different threshold, change both.
 
 ### Task 4 — Matrix filtering
 
 ```matlab
-M = rand(10, 10);   % <-- matrix size
-M(M < 0.2) = 0;     % <-- lower cut-off
-M(M > 0.8) = 1;     % <-- upper cut-off
+randomMatrix = rand(10, 10);   % <-- matrix size
+randomMatrix(randomMatrix < 0.2) = 0;   % <-- lower cut-off
+randomMatrix(randomMatrix > 0.8) = 1;   % <-- upper cut-off
 ```
 
 Note that `lowCount` and `highCount` are deliberately computed **before** the two

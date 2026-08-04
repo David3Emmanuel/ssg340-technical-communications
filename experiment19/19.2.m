@@ -1,45 +1,45 @@
 %% PSO for f(x,y) = x^2 + y^2 + 10sin(x) + 10sin(y)
-nParticles = 30; maxIter = 100;
-lb = [-1.5 -1.5]; ub = [1.5 1.5];
-w = 0.7; c1 = 1.5; c2 = 1.5;
+numParticles = 30; maxIter = 100;
+lowerBounds = [-1.5 -1.5]; upperBounds = [1.5 1.5];
+inertiaWeight = 0.7; cognitiveWeight = 1.5; socialWeight = 1.5;
 
-pos = lb + rand(nParticles,2).*(ub-lb);
-vel = zeros(nParticles,2);
-pbest = pos;
-pbestVal = arrayfun(@(i) pso_obj(pos(i,:)), 1:nParticles)';
-[gbestVal, idx] = min(pbestVal);
-gbest = pos(idx,:);
+positions = lowerBounds + rand(numParticles,2).*(upperBounds-lowerBounds);
+velocities = zeros(numParticles,2);
+personalBest = positions;
+personalBestVal = arrayfun(@(idx) psoObjective(positions(idx,:)), 1:numParticles)';
+[globalBestVal, bestIdx] = min(personalBestVal);
+globalBest = positions(bestIdx,:);
 
 history = zeros(maxIter,1);
-for iter = 1:maxIter
-    for i = 1:nParticles
-        vel(i,:) = w*vel(i,:) + c1*rand*(pbest(i,:)-pos(i,:)) + c2*rand*(gbest-pos(i,:));
-        pos(i,:) = pos(i,:) + vel(i,:);
-        pos(i,:) = max(min(pos(i,:), ub), lb);
+for iterIdx = 1:maxIter
+    for particleIdx = 1:numParticles
+        velocities(particleIdx,:) = inertiaWeight*velocities(particleIdx,:) + cognitiveWeight*rand*(personalBest(particleIdx,:)-positions(particleIdx,:)) + socialWeight*rand*(globalBest-positions(particleIdx,:));
+        positions(particleIdx,:) = positions(particleIdx,:) + velocities(particleIdx,:);
+        positions(particleIdx,:) = max(min(positions(particleIdx,:), upperBounds), lowerBounds);
 
-        val = pso_obj(pos(i,:));
-        if val < pbestVal(i)
-            pbestVal(i) = val;
-            pbest(i,:) = pos(i,:);
+        candidateVal = psoObjective(positions(particleIdx,:));
+        if candidateVal < personalBestVal(particleIdx)
+            personalBestVal(particleIdx) = candidateVal;
+            personalBest(particleIdx,:) = positions(particleIdx,:);
         end
     end
-    [minVal, idx] = min(pbestVal);
-    if minVal < gbestVal
-        gbestVal = minVal;
-        gbest = pbest(idx,:);
+    [currentBestVal, bestIdx] = min(personalBestVal);
+    if currentBestVal < globalBestVal
+        globalBestVal = currentBestVal;
+        globalBest = personalBest(bestIdx,:);
     end
-    history(iter) = gbestVal;
+    history(iterIdx) = globalBestVal;
 end
 
-fprintf('PSO best: x=%.4f, y=%.4f, f=%.4f\n', gbest(1), gbest(2), gbestVal);
+fprintf('PSO best: x=%.4f, y=%.4f, f=%.4f\n', globalBest(1), globalBest(2), globalBestVal);
 figure; plot(history); xlabel('Iteration'); ylabel('Best Fitness'); title('PSO Convergence'); grid on;
 
-function val = pso_obj(v)
-    x = v(1); y = v(2);
-    f = x^2 + y^2 + 10*sin(x) + 10*sin(y);
-    g1 = x + y - 2;    % <=0
-    g2 = x - 1.5;       % >=0
-    g3 = y - 1.5;       % >=0
-    penalty = 100*max(0,g1)^2 + 100*max(0,-g2)^2 + 100*max(0,-g3)^2;
-    val = f + penalty;
+function penalisedValue = psoObjective(candidate)
+    xVal = candidate(1); yVal = candidate(2);
+    baseValue = xVal^2 + yVal^2 + 10*sin(xVal) + 10*sin(yVal);
+    sumConstraint = xVal + yVal - 2;    % <=0
+    xConstraint = xVal - 1.5;            % >=0
+    yConstraint = yVal - 1.5;            % >=0
+    penalty = 100*max(0,sumConstraint)^2 + 100*max(0,-xConstraint)^2 + 100*max(0,-yConstraint)^2;
+    penalisedValue = baseValue + penalty;
 end

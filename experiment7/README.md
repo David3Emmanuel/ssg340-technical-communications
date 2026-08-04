@@ -31,13 +31,13 @@ So `cd experiment7` before running, or the images land in the repository root.
 ### 7.1.m uses two different x vectors on purpose
 
 ```matlab
-x_line = linspace(-10, 10, 1000);   % smooth curves
-x_mark = linspace(-10, 10, 30);     % markers only
+lineGrid = linspace(-10, 10, 1000);   % smooth curves
+markerGrid = linspace(-10, 10, 30);   % markers only
 ```
 
 The lines need 1000 points to look smooth, but drawing 1000 circles and squares would
 smear into a solid block. The marker series are therefore plotted against the
-30-point vector instead. This is why `comp1` and `comp3` are each calculated twice —
+30-point vector instead. This is why `lineComp1` and `lineComp3` are each calculated twice —
 once for the line resolution, once for the marker resolution.
 
 ### `axis equal` fights with the axis limits

@@ -38,9 +38,9 @@ A Leslie matrix has a fixed shape. Only two kinds of entry are free; the rest mu
 exactly zero.
 
 ```matlab
-L = [0,   1.5, 1.2;    % row 1  = fecundity
-     0.8, 0,   0;      % subdiagonal = survival
-     0,   0.5, 0];
+leslieMatrix = [0,   1.5, 1.2;   % row 1  = fecundity
+                0.8, 0,   0;     % subdiagonal = survival
+                0,   0.5, 0];
 ```
 
 | Position | Meaning | Valid values |
@@ -68,7 +68,7 @@ This one has a hard constraint that per-entry ranges cannot express:
 
 Column *j* holds the probabilities of where the student goes *from* intersection *j*.
 They have to go somewhere, so those probabilities must total 1. The script multiplies
-`P * X_state`, which is the column convention.
+`transitionMatrix * stateVector`, which is the column convention.
 
 If everyone picks entries independently, the columns will not sum to 1, total
 probability leaks away or inflates on every step, and the "limiting distribution"
@@ -78,8 +78,8 @@ answer. This is the failure mode to warn your course mates about.
 **Check any matrix before trusting it:**
 
 ```matlab
-sum(P)                      % should print 1 for every column
-all(abs(sum(P) - 1) < 1e-10)  % should print 1 (true)
+sum(transitionMatrix)                        % should print 1 for every column
+all(abs(sum(transitionMatrix) - 1) < 1e-10)   % should print 1 (true)
 ```
 
 The placeholder currently in the file passes this check, so you can use it as a
@@ -100,11 +100,11 @@ data specific to a scenario, so there is nothing to swap out:
   infinitely many solutions for the wide one.
 - **16.4.m** — builds its own 1000×1000 tridiagonal matrix as a stand-in for a large
   Markov matrix. Expect the sparse version to use a small fraction of the memory and
-  solve considerably faster; that gap is the result the task wants. `b_large` uses
+  solve considerably faster; that gap is the result the task wants. `rhsVector` uses
   `rand`, so the timings shift slightly each run.
 - **16.5.m** — the test system is a generic symmetric matrix. Both solutions printed
   should agree to several decimal places; that agreement is what validates the
   hand-written elimination against MATLAB's `\`.
 
-`gauss_elimination_pivot` sits at the bottom of `16.5.m` because MATLAB requires local
+`gaussEliminationPivot` sits at the bottom of `16.5.m` because MATLAB requires local
 functions to come last in a script.

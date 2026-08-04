@@ -1,47 +1,47 @@
 % 1. Define Initial Conditions
-h0 = 100;
-v0 = 0;
-g = 9.8;
-dt = 0.1;
-t_max = 50; 
+initialHeight = 100;
+initialVelocity = 0;
+gravity = 9.8;
+timeStep = 0.1;
+maxTime = 50;
 
 % Execute the function
-[time_out, height_out, velocity_out] = free_fall(h0, v0, g, dt, t_max);
+[timeData, heightData, velocityData] = freeFall(initialHeight, initialVelocity, gravity, timeStep, maxTime);
 
 % 4. Plot the Results
 figure;
-plot(time_out, height_out, 'LineWidth', 1.5);
+plot(timeData, heightData, 'LineWidth', 1.5);
 title('Free Fall Motion: Height vs Time');
 xlabel('Time (s)');
 ylabel('Height (m)');
 grid on;
 
 % 3. Create a Function for Free Fall Motion
-function [time, height, velocity] = free_fall(h0, v0, g, dt, t_max)
+function [timeArray, heightArray, velocityArray] = freeFall(startHeight, startVelocity, gravity, timeStep, maxTime)
     % Initialize time array
-    time = 0:dt:t_max;
-    n = length(time);
-    
-    height = zeros(1, n);
-    velocity = zeros(1, n);
-    
+    timeArray = 0:timeStep:maxTime;
+    numSteps = length(timeArray);
+
+    heightArray = zeros(1, numSteps);
+    velocityArray = zeros(1, numSteps);
+
     % 2. Create a Loop to Simulate Motion
-    for i = 1:n
-        t = time(i);
-        
+    for stepIdx = 1:numSteps
+        currentTime = timeArray(stepIdx);
+
         % Kinematic equations
-        height(i) = h0 + v0*t - 0.5*g*t^2;
-        velocity(i) = v0 - g*t;
-        
+        heightArray(stepIdx) = startHeight + startVelocity*currentTime - 0.5*gravity*currentTime^2;
+        velocityArray(stepIdx) = startVelocity - gravity*currentTime;
+
         % Display the results at each time step
-        fprintf('Time: %.1f s | Height: %.2f m | Velocity: %.2f m/s\n', t, height(i), velocity(i));
-        
+        fprintf('Time: %.1f s | Height: %.2f m | Velocity: %.2f m/s\n', currentTime, heightArray(stepIdx), velocityArray(stepIdx));
+
         % 5. Determine When the Object Hits the Ground
-        if height(i) <= 0
+        if heightArray(stepIdx) <= 0
             % Truncate the arrays to remove unused preallocated space
-            time = time(1:i);
-            height = height(1:i);
-            velocity = velocity(1:i);
+            timeArray = timeArray(1:stepIdx);
+            heightArray = heightArray(1:stepIdx);
+            velocityArray = velocityArray(1:stepIdx);
             break;
         end
     end

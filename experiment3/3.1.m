@@ -1,17 +1,17 @@
 % 1. Define Arrays
-degrees = linspace(0, 360, 50);
+angleDeg = linspace(0, 360, 50);
 
 % 2. Convert to Radians
-radians = (pi / 180) .* degrees;
+angleRad = (pi / 180) .* angleDeg;
 
 % 3. Plot the Sine and Cosine Functions
-sine_values = sin(radians);
-cosine_values = cos(radians);
+sineValues = sin(angleRad);
+cosineValues = cos(angleRad);
 
 figure;
-plot(radians, sine_values, 'LineWidth', 1.5);
+plot(angleRad, sineValues, 'LineWidth', 1.5);
 hold on;
-plot(radians, cosine_values, 'LineWidth', 1.5);
+plot(angleRad, cosineValues, 'LineWidth', 1.5);
 hold off;
 
 xlabel('Angle in radians');
@@ -23,6 +23,6 @@ title('Sine and Cosine Functions');
 grid on;
 
 % 5. Display Results in Table Format
-results_table = [degrees', sine_values', cosine_values'];
+resultsTable = [angleDeg', sineValues', cosineValues'];
 disp('Angle (degrees) | Sine Value | Cosine Value');
-disp(results_table);
+disp(resultsTable);

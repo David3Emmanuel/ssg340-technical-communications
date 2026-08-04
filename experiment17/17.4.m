@@ -1,23 +1,23 @@
 fprintf('\n--- 17.4: Euler''s Method Population Growth ---\n');
-a = 0.5;   % growth rate (not specified exactly, using typical value)
-N0 = 1000;
-tEnd = 5;
-hValues = [2, 1, 0.5];
+growthRate = 0.5;   % growth rate (not specified exactly, using typical value)
+initialPop = 1000;
+endTime = 5;
+stepSizes = [2, 1, 0.5];
 
 figure; hold on;
-for h = hValues
-    t = 0:h:tEnd;
-    N = zeros(size(t));
-    N(1) = N0;
-    for i = 1:length(t)-1
-        N(i+1) = N(i) + h * a * N(i);
+for currentStep = stepSizes
+    timeGrid = 0:currentStep:endTime;
+    population = zeros(size(timeGrid));
+    population(1) = initialPop;
+    for stepIdx = 1:length(timeGrid)-1
+        population(stepIdx+1) = population(stepIdx) + currentStep * growthRate * population(stepIdx);
     end
-    plot(t, N, '-o', 'DisplayName', ['h = ', num2str(h)]);
+    plot(timeGrid, population, '-o', 'DisplayName', ['h = ', num2str(currentStep)]);
 end
 
-tExact = 0:0.01:tEnd;
-Nexact = N0 * exp(a*tExact);
-plot(tExact, Nexact, 'k--', 'DisplayName', 'Exact solution');
+exactTime = 0:0.01:endTime;
+exactPop = initialPop * exp(growthRate*exactTime);
+plot(exactTime, exactPop, 'k--', 'DisplayName', 'Exact solution');
 
 xlabel('Time'); ylabel('Population N(t)');
 title('Euler''s Method: Population Growth');

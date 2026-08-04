@@ -22,25 +22,25 @@ disp(D);
 
 %% Task 3: Matrix Transposition and Accessing Submatrices
 fprintf('\n--- Task 3: Transposition and Submatrices ---\n');
-Atrans = A';   % transpose of A
+transposeOfA = A';   % transpose of A
 disp('A transpose:');
-disp(Atrans);
+disp(transposeOfA);
 
-sub = A(1:2, 2:3);   % submatrix using colon notation
+subBlock = A(1:2, 2:3);   % submatrix using colon notation
 disp('Submatrix A(1:2, 2:3):');
-disp(sub);
+disp(subBlock);
 
 %% Task 4: Advanced Matrix Reshaping and Operations
 fprintf('\n--- Task 4: Matrix Reshaping ---\n');
-x = 1:9;
-M = reshape(x, 3, 3);   % reshape 1D array into 3x3 matrix
+sequence = 1:9;
+M = reshape(sequence, 3, 3);   % reshape 1D array into 3x3 matrix
 disp('Reshaped 3x3 matrix M:');
 disp(M);
 
-Mtrans = M';             % transpose of reshaped matrix
+transposeOfM = M';             % transpose of reshaped matrix
 disp('Transpose of M:');
-disp(Mtrans);
+disp(transposeOfM);
 
-Msquared = M .^ 2;       % element-wise square, another operation on reshaped matrix
+squaredM = M .^ 2;       % element-wise square, another operation on reshaped matrix
 disp('Element-wise square of M:');
-disp(Msquared);
+disp(squaredM);
