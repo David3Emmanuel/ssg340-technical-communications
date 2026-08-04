@@ -90,20 +90,20 @@ fprintf('\n--- Task 3: Correcting Multiple Errors from Listing 9.8 ---\n');
 numericPart = 5;
 textPart = 'hello';
 
-% FIX 1: Convert numeric 'x' to string using num2str() before concatenating
+% FIX 1: Convert the numeric value to a string using num2str() before concatenating
 joinedText = [num2str(numericPart), ' ', textPart];
-fprintf('Corrected String Concatenation (z): %s\n', joinedText);
+fprintf('Corrected String Concatenation (joinedText): %s\n', joinedText);
 
 % FIX 2: Provide a valid numeric argument to the sin() function
 sineResult = sin(pi/2);
-fprintf('Corrected sin() function (a_val): %f\n', sineResult);
+fprintf('Corrected sin() function (sineResult): %f\n', sineResult);
 
 baseMatrix = [1, 2; 3, 4];
 
 % FIX 3: Ensure matrices have matching dimensions for addition.
-% We replace the 1x3 vector [1, 2, 3] with a 2x2 matrix to match 'b_mat'.
+% We replace the 1x3 vector [1, 2, 3] with a 2x2 matrix to match 'baseMatrix'.
 sumMatrix = baseMatrix + [10, 20; 30, 40];
-disp('Corrected Matrix Addition (c_mat):');
+disp('Corrected Matrix Addition (sumMatrix):');
 disp(sumMatrix);
 
 disp('End of script (Executed Successfully without crashing)')

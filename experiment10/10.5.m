@@ -1,5 +1,5 @@
-%% Task 1-3: Generalized Newton's Method (newtgen) with function handles
-fprintf('--- Generalized Newton (newtgen) ---\n');
+%% Task 1-3: Generalized Newton's Method (generalNewton) with function handles
+fprintf('--- Generalized Newton (generalNewton) ---\n');
 
 cubicFunc  = @(x) x^3 + x - 3;
 cubicDeriv = @(x) 3*x^2 + 1;

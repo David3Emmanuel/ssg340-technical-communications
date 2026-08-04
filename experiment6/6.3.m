@@ -58,5 +58,5 @@ randomMatrix(randomMatrix > 0.8) = 1;        % clip large values to 1
 
 fprintf('Values set to 0 (were < 0.2): %d\n', lowCount);
 fprintf('Values set to 1 (were > 0.8): %d\n', highCount);
-disp('Filtered matrix M:');
+disp('Filtered matrix randomMatrix:');
 disp(randomMatrix);

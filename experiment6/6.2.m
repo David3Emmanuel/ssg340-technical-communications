@@ -5,15 +5,15 @@ disp('Vector sampleVector:');
 disp(sampleVector);
 
 if any(sampleVector < 0.3)
-    disp('At least one element in b is less than 0.3');
+    disp('At least one element in sampleVector is less than 0.3');
 else
-    disp('No element in b is less than 0.3');
+    disp('No element in sampleVector is less than 0.3');
 end
 
 if all(sampleVector > 0.5)
-    disp('All elements in b are greater than 0.5');
+    disp('All elements in sampleVector are greater than 0.5');
 else
-    disp('Not all elements in b are greater than 0.5');
+    disp('Not all elements in sampleVector are greater than 0.5');
 end
 
 %% Task 2: Simulating Dice Rolls

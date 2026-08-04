@@ -22,7 +22,7 @@ function solution = gaussEliminationPivot(coeffMatrix, rhsVector)
     % Implements Gauss Elimination with Partial Pivoting
     [numRows, numCols] = size(coeffMatrix);
     if numRows ~= numCols
-        error('Matrix A must be square');
+        error('Coefficient matrix must be square');
     end
 
     % Augmented matrix

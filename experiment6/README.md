@@ -75,22 +75,24 @@ should see. Useful for checking your run:
 
 | Task | Result |
 | --- | --- |
-| 1 — solve `A1*X = B1` | `X = [1; 2]` |
-| 2 — determinant of `A2` | `-5` |
-| 2 — inverse of `A2` | `[-0.2, 0.4; 0.8, -0.6]` |
-| 2 — identity check | the 2×2 identity |
-| 3 — eigenvalues of `A3` | `2` and `5` |
-| 4 — `L * U` | reproduces `A4` exactly |
+| 1 — solve `systemMatrix * X = systemRhs` | `systemSolution = [1; 2]` |
+| 2 — `determinantValue` | `-5` |
+| 2 — `inverseMatrix` | `[-0.2, 0.4; 0.8, -0.6]` |
+| 2 — `identityCheck` | the 2×2 identity |
+| 3 — eigenvalues on the diagonal of `eigenvalueDiag` | `2` and `5` |
+| 4 — `lowerFactor * upperFactor` | reproduces `factorMatrix` exactly |
 
 Two things worth knowing for the viva:
 
-- **Task 1 uses `\`, not `inv(A1)*B1`.** Left division solves the system directly
-  without ever forming the inverse, which is both faster and more numerically
-  accurate. Task 2 computes an inverse only because it is explicitly asked to.
-- **Task 4's `L` comes out genuinely lower triangular here.** With two outputs, `lu`
-  returns a *row-permuted* `L` whenever pivoting is needed — `L*U` still reproduces
-  the original matrix, but `L` may not look triangular. `A4` happens not to need a row
-  swap, so this one looks textbook.
+- **Task 1 uses `\`, not `inv(systemMatrix)*systemRhs`.** Left division solves the
+  system directly without ever forming the inverse, which is both faster and more
+  numerically accurate. Task 2 computes an inverse only because it is explicitly asked
+  to.
+- **Task 4's `lowerFactor` comes out genuinely lower triangular here.** With two
+  outputs, `lu` returns a *row-permuted* lower factor whenever pivoting is needed —
+  the product still reproduces the original matrix, but the factor may not look
+  triangular. `factorMatrix` happens not to need a row swap, so this one looks
+  textbook.
 
 ## Note on the random-number tasks
 
