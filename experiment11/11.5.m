@@ -3,12 +3,12 @@
 disp('--- 11.5 Experiment 5: Data Structures & Cell Arrays ---');
 
 % 1 & 2: Structure array representing student data
-students(1).Name = 'Abdullah';
-students(1).ID = '230407018';
+students(1).Name = 'qayniqah';
+students(1).ID = '34568788';
 students(1).Marks = [85, 90, 88];
 
-students(2).Name = 'AbdulMalik';
-students(2).ID = '230407035';
+students(2).Name = 'alfonso';
+students(2).ID = '45678901';
 students(2).Marks = [92, 88, 95];
 
 disp('Structure Array of Students:');
@@ -17,7 +17,7 @@ for studentIdx = 1:length(students)
 end
 
 % 3: Cell array storing different types of data
-mixedCell = {'Systems Engineering', 2026, students(1), [1.1, 2.2, 3.3]};
+mixedCell = {'Mass com ', 2026, students(1), [1.1, 2.2, 3.3]};
 
 % 4: Access and manipulate data in cell array
 fprintf('\nAccessing Cell Array:\n');
@@ -31,7 +31,7 @@ fprintf('Modified Student Marks in cell: [%d, %d, %d]\n', mixedCell{3}.Marks);
 
 % 5: Call the variable argument function (defined at the end of the script)
 fprintf('\nCreating structures with varargin:\n');
-[dynamicStudents] = createStudents('Ali', 'ENG003', [70 75 80], 'Zainab', 'ENG004', [99 98 97]);
+[dynamicStudents] = createStudents('ROdri', 'EMS003', [70 75 80], 'Zainab', 'ENG004', [99 98 97]);
 disp(dynamicStudents);
 for studentIdx = 1:length(dynamicStudents)
     fprintf('Dynamic Student %d: %s (%s)\n', studentIdx, dynamicStudents(studentIdx).Name, dynamicStudents(studentIdx).ID);
