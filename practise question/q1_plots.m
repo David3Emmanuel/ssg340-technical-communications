@@ -1,0 +1,38 @@
+x = linspace(-4,4,1000);
+y = (3*x.^2.*exp(-0.6*x))./(1+x.^4);
+figure;
+plot(x,y,'LineWidth',1.5);
+grid on;
+xlabel('x'); ylabel('y');
+title('y = 3x^2e^{-0.6x}/(1+x^4)');
+[ymax,imax] = max(y);
+[ymin,imin] = min(y);
+hold on;
+plot(x(imax),ymax,'ro','MarkerFaceColor','r');
+plot(x(imin),ymin,'bo','MarkerFaceColor','b');
+legend('y(x)','Maximum region','Minimum region');
+hold off;
+
+t = linspace(-pi,pi,1000);
+xt = sinh(2*t).*cos(3*t);
+yt = cosh(t).*sin(3*t);
+figure;
+plot(xt,yt,'LineWidth',1.5);
+axis equal;
+grid on;
+xlabel('x(t)'); ylabel('y(t)');
+title('x(t)=sinh(2t)cos(3t), y(t)=cosh(t)sin(3t)');
+
+x = linspace(-2,10,1000);
+y1 = 3*x;
+y2 = x.^5;
+y3 = 2*x.^3+1;
+figure;
+plot(x,y1,'-','LineWidth',1.5); hold on;
+plot(x,y2,'--','LineWidth',1.5);
+plot(x,y3,':','LineWidth',1.5);
+grid on;
+xlabel('x'); ylabel('y');
+title('y_1=3x, y_2=x^5, y_3=2x^3+1');
+legend('y_1=3x','y_2=x^5','y_3=2x^3+1','Location','best');
+hold off;

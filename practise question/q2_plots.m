@@ -1,0 +1,31 @@
+x = linspace(-10,10,2000);
+y = (x.^3.*sin(x))./(1+x.^2).*exp(-0.1*x.^2);
+figure;
+plot(x,y,'LineWidth',1.5);
+grid on;
+xlabel('x'); ylabel('y');
+title('y = x^3sin(x)e^{-0.1x^2}/(1+x^2)');
+
+t = linspace(-2,2,1000);
+xt = cosh(2*t).*cos(t) - sinh(t);
+yt = sinh(2*t).*sin(t) + cosh(t);
+figure;
+plot(xt,yt,'LineWidth',1.5);
+axis equal;
+grid on;
+xlabel('x(t)'); ylabel('y(t)');
+title('x(t)=cosh(2t)cos(t)-sinh(t), y(t)=sinh(2t)sin(t)+cosh(t)');
+
+x = linspace(-4.9,8,1000);
+y1 = exp(0.4*x);
+y2 = x.^4+2*x.^2;
+y3 = 10*log(x+5);
+figure;
+plot(x,y1,'-','LineWidth',1.5); hold on;
+plot(x,y2,'--','LineWidth',1.5);
+plot(x,y3,':','LineWidth',1.5);
+grid on;
+xlabel('x'); ylabel('y');
+title('y_1=e^{0.4x}, y_2=x^4+2x^2, y_3=10ln(x+5)');
+legend('y_1=e^{0.4x}','y_2=x^4+2x^2','y_3=10ln(x+5)','Location','best');
+hold off;

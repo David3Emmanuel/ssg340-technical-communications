@@ -1,0 +1,31 @@
+x = linspace(-8,8,2000);
+y = (2*x.*cos(x.^2))./(1+x.^2);
+figure;
+plot(x,y,'LineWidth',1.5);
+grid on;
+xlabel('x'); ylabel('y');
+title('y = 2xcos(x^2)/(1+x^2)');
+
+t = linspace(0,2*pi,1000);
+xt = cos(t) + 0.5*cos(5*t);
+yt = sin(t) - 0.5*sin(5*t);
+figure;
+plot(xt,yt,'LineWidth',1.5);
+axis equal;
+grid on;
+xlabel('x(t)'); ylabel('y(t)');
+title('x(t)=cos(t)+0.5cos(5t), y(t)=sin(t)-0.5sin(5t)');
+
+x = linspace(0,4*pi,1000);
+y1 = sin(x);
+y2 = cos(x);
+y3 = exp(-0.2*x).*sin(x);
+figure;
+plot(x,y1,'-','LineWidth',1.5); hold on;
+plot(x,y2,'--','LineWidth',1.5);
+plot(x,y3,':','LineWidth',1.5);
+grid on;
+xlabel('x'); ylabel('y');
+title('y_1=sin(x), y_2=cos(x), y_3=e^{-0.2x}sin(x)');
+legend('y_1=sin(x)','y_2=cos(x)','y_3=e^{-0.2x}sin(x)','Location','best');
+hold off;
